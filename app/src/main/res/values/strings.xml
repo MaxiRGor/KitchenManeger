@@ -10,7 +10,7 @@
     <string name="example_amount_of_ingredients">2</string>
     <string name="example_amount_of_ingredients_multiply">x</string>
     <string name="hint_ingredient_name">Name</string>
-    <string name="hint_ingredient_amount">Amount</string>
+    <string name="hint_ingredient_amount">0</string>
     <string name="example_weight_type">g</string>
     <string name="hint_manufacturer">Manufacturer</string>
     <string name="hint_comment">Comment</string>
@@ -33,5 +33,6 @@
     <string name="yes">Yes</string>
     <string name="search">Search</string>
     <string name="ingredient">Ingredient</string>
+    <string name="shelf_life">Shelf life</string>
 
 </resources>

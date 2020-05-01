@@ -1,19 +1,20 @@
 package com.distinct.kitchenmanager.ui.fridge;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class FridgeViewModel extends ViewModel {
+import com.distinct.kitchenmanager.ui.fragment_with_search_view.IngredientListViewModel;
 
-    private MutableLiveData<String> mText;
+import java.util.List;
 
-    public FridgeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
-    }
+public class FridgeViewModel extends IngredientListViewModel {
 
-    public LiveData<String> getText() {
-        return mText;
+
+    public FridgeViewModel(@NonNull Application application) {
+        super(application);
     }
 }

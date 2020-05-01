@@ -1,16 +1,16 @@
 package com.distinct.kitchenmanager;
 
-import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.distinct.kitchenmanager.ui.dialogs.ChangeIngredientDialogFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,17 +19,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ApplicationContextSingleton.getInstance().initialize(this);
-/*        if (getSupportActionBar() != null)
-            getSupportActionBar().hide();*/
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_fridge, R.id.navigation_shopping_list, R.id.navigation_food_dairy)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
+        findViewById(R.id.add_ingredient_floating_action_button).setOnClickListener(view -> {
+            DialogFragment dialog = ChangeIngredientDialogFragment.newInstance(-1);
+            dialog.show(getSupportFragmentManager(), "AddIngredientDialog");
+        });
 
     }
 

@@ -1,6 +1,5 @@
 package com.distinct.kitchenmanager.ui.shopping_list;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,7 +21,6 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
 
     FragmentManager fragmentManager;
     ShoppingListViewModel shoppingListViewModel;
-
     private Ingredient ingredient;
     private CheckBox isInBasketCheckbox;
     private LinearLayout amountOfIngredientsLinearLayout;
@@ -66,8 +64,8 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
     @Override
     public boolean onLongClick(View view) {
         Snackbar.make(view, R.string.want_to_delete_item, Snackbar.LENGTH_LONG)
-                .setAction(R.string.yes, v -> shoppingListViewModel.deleteIngredient(ingredient.id)
-                );
+                .setAction(R.string.yes, v -> shoppingListViewModel.deleteIngredient(ingredient.id))
+                .show();
         return true;
     }
 

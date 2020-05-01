@@ -32,12 +32,12 @@
 
     <style name="RoundButtonStyle" parent="AppTheme">
         <item name="android:textSize">@dimen/round_button_text_size</item>
-        <item name="android:layout_width">56dp</item>
-        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">56dp</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">0dp</item>
         <item name="android:layout_margin">0dp</item>
-        <item name="cornerRadius">56dp</item>
+        <item name="cornerRadius">48dp</item>
     </style>
 
     <style name="AutoCompleteTextViewStyle" parent="@style/Base.Widget.MaterialComponents.AutoCompleteTextView">

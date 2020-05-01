@@ -11,6 +11,8 @@ import com.distinct.kitchenmanager.model.room.database.AppDatabase;
 import com.distinct.kitchenmanager.model.room.database.DatabaseSource;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -102,7 +104,7 @@ public class ChangeIngredientViewModel extends ViewModel {
 
     void setIngredientId() {
         Ingredient ingredient = ingredientLiveData.getValue();
-        if (ingredient != null && ingredient.amountOfIngredients > 0) {
+        if (ingredient != null) {
             ingredient.id = idOfIngredientToChange;
             ingredientLiveData.setValue(ingredient);
         }
@@ -110,5 +112,27 @@ public class ChangeIngredientViewModel extends ViewModel {
 
     void updateIngredientInDatabase() {
         AsyncTask.execute(() -> appDatabase.ingredientDao().update(ingredientLiveData.getValue()));
+    }
+
+    void setShelfLife(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        Ingredient ingredient = ingredientLiveData.getValue();
+        if (ingredient != null) {
+            ingredient.shelfLifeDate = calendar.getTime().getTime();
+            ingredientLiveData.setValue(ingredient);
+        }
+    }
+
+    Calendar getShelfLifeDataCalendar() {
+        Ingredient ingredient = ingredientLiveData.getValue();
+        if (ingredient != null && ingredient.shelfLifeDate != 0) {
+            Date date = new Date();
+            date.setTime(ingredient.shelfLifeDate);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            return calendar;
+        }
+        return null;
     }
 }

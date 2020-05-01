@@ -1,6 +1,5 @@
 package com.distinct.kitchenmanager.ui.dialogs;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,18 +15,18 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
 import com.distinct.kitchenmanager.R;
+import com.distinct.kitchenmanager.element_behaviour.DateFormatter;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 
 import java.util.concurrent.Callable;
 
-public class ChangeIngredientDialogFragment extends DialogFragment {
+public class ChangeIngredientDialogFragment extends DialogFragment implements OnDatePickedListener {
 
     private static String ingredientIdString = "ingredientId";
 
@@ -40,6 +39,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
     private EditText commentEditText;
     private TextView amountOfIngredientsTextView;
     private TextView actionsDestinationNameTextView;
+    private TextView shelfLifeTextView;
     private RadioGroup stageTypeRadioGroup;
     private Button changeIngredientButton;
     private Spinner weightTypesSpinner;
@@ -93,6 +93,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
         weightTypesSpinner = root.findViewById(R.id.weight_types_spinner);
         stageTypeRadioGroup = root.findViewById(R.id.stage_type_radio_group);
         actionsDestinationNameTextView = root.findViewById(R.id.actions_destination_name_text_view);
+        shelfLifeTextView = root.findViewById(R.id.shelf_life_text_view);
     }
 
     private void setAutoCompleteTextViews() {
@@ -133,7 +134,6 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
     private void setOnClickListeners(View root) {
         root.findViewById(R.id.subtract_from_amount_of_ingredients_button).setOnClickListener(subtractIngredient);
         root.findViewById(R.id.add_to_amount_of_ingredients_button).setOnClickListener(addIngredient);
-        // root.findViewById(R.id.dismiss_button).setOnClickListener(onDismiss);
         if (changeIngredientViewModel.idOfIngredientToChange >= 0) {
             changeIngredientButton.setOnClickListener(saveIngredient);
             changeIngredientButton.setText(R.string.save);
@@ -142,6 +142,13 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
             changeIngredientButton.setText(R.string.add);
         }
 
+        shelfLifeTextView.setOnClickListener(view -> showDatePickerDialog());
+
+    }
+
+    private void showDatePickerDialog() {
+        DialogFragment newFragment = DatePickerFragment.newInstance(this, changeIngredientViewModel.getShelfLifeDataCalendar());
+        newFragment.show(getChildFragmentManager(), "datePicker");
     }
 
 
@@ -156,9 +163,18 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
     private void fillData(Ingredient item) {
         ingredientNameEditText.setText(item.name);
         manufacturerEditText.setText(item.manufacturer);
-        ingredientAmountEditText.setText(String.valueOf(item.amount));
+
         commentEditText.setText(item.comment);
         weightTypesSpinner.setSelection(item.weightType);
+
+        if (item.amount != 0) {
+            if (item.amount % (int) item.amount == 0)
+                ingredientAmountEditText.setText(String.valueOf((int) item.amount));
+            else ingredientAmountEditText.setText(String.valueOf(item.amount));
+        }
+
+        if (item.shelfLifeDate != 0)
+            shelfLifeTextView.setText(DateFormatter.getStringFromDateTime(item.shelfLifeDate));
 
         int selectedRadioButtonId = 0;
         if (item.stageType == IngredientStageType.InBasket.ordinal())
@@ -193,28 +209,24 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
         }
     };
 
-    private View.OnClickListener saveIngredient = view -> {
-        performActionAfterChecks(new Callable<Void>() {
-            @Override
-            public Void call() {
-                changeIngredientViewModel.setIngredientId();
-                changeIngredientViewModel.updateIngredientInDatabase();
-                dismiss();
-                return null;
-            }
-        });
-    };
+    private View.OnClickListener saveIngredient = view -> performActionAfterChecks(new Callable<Void>() {
+        @Override
+        public Void call() {
+            changeIngredientViewModel.setIngredientId();
+            changeIngredientViewModel.updateIngredientInDatabase();
+            dismiss();
+            return null;
+        }
+    });
 
-    private View.OnClickListener addIngredientToShoppingList = view -> {
-        performActionAfterChecks(new Callable<Void>() {
-            @Override
-            public Void call() {
-                changeIngredientViewModel.addIngredientToDatabase();
-                dismiss();
-                return null;
-            }
-        });
-    };
+    private View.OnClickListener addIngredientToShoppingList = view -> performActionAfterChecks(new Callable<Void>() {
+        @Override
+        public Void call() {
+            changeIngredientViewModel.addIngredientToDatabase();
+            dismiss();
+            return null;
+        }
+    });
 
     private void performActionAfterChecks(Callable<Void> task) {
         String ingredientName = ingredientNameEditText.getText().toString();
@@ -244,4 +256,12 @@ public class ChangeIngredientDialogFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDateSet(int year, int month, int day) {
+        Log.d("a", "year = " + year);
+        performActionAfterChecks(() -> {
+            changeIngredientViewModel.setShelfLife(year, month, day);
+            return null;
+        });
+    }
 }

@@ -17,10 +17,10 @@ import java.util.List;
 @Dao
 public interface IngredientDao {
     @Query("SELECT * FROM Ingredient where stage_type in (:stageTypes)")
-    LiveData<List<Ingredient>> getAllForShoppingListLiveData(int[] stageTypes);
+    LiveData<List<Ingredient>> getAllByStageTypes(int[] stageTypes);
 
     @Query("SELECT * FROM Ingredient where stage_type in (:stageTypes) and name like '%' || :search || '%'")
-    List<Ingredient> getByNameForShoppingList(int[] stageTypes, String search);
+    List<Ingredient> getByStageTypesAndName(int[] stageTypes, String search);
 
     @Query("SELECT * FROM Ingredient")
     List<Ingredient> getAll();
