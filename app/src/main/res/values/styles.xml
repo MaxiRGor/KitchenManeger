@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+<!--        <item name="android:fragment">@style/AppTheme</item>-->
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="autoCompleteTextViewStyle">@style/AutoCompleteTextViewStyle</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+    </style>
+
+<!--    <style name="SplashTheme" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="android:windowBackground">@color/colorAccent</item>
+    </style>-->
+
+    <style name="ActionBarStyle" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+        <item name="background">@color/colorPrimaryDark</item>
+        <item name="layout_scrollFlags">scroll|enterAlways</item>
+    </style>
+
+
+    <style name="ButtonStyle" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textAppearance">@style/TextStyle</item>
+        <item name="android:textColor">@color/colorButtonText</item>
+    </style>
+
+    <style name="RoundButtonStyle" parent="AppTheme">
+        <item name="android:textSize">@dimen/round_button_text_size</item>
+        <item name="android:layout_width">56dp</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="cornerRadius">56dp</item>
+    </style>
+
+    <style name="AutoCompleteTextViewStyle" parent="@style/Base.Widget.MaterialComponents.AutoCompleteTextView">
+        <item name="android:textAppearance">@style/TextStyle</item>
+    </style>
+
+    <style name="EditTextStyle" parent="@style/Base.Widget.MaterialComponents.TextInputEditText">
+        <item name="android:textAppearance">@style/TextStyle</item>
+    </style>
+
+
+    <style name="TextStyle" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">#11E150</item>
+        <item name="hintTextColor">@color/colorAccent</item>
+    </style>
+
+
+</resources>

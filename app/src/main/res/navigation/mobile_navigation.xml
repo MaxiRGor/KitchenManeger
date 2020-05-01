@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_fridge">
+
+    <fragment
+        android:id="@+id/navigation_fridge"
+        android:name="com.distinct.kitchenmanager.ui.fridge.FridgeFragment"
+        android:label="@string/title_fridge"
+        tools:layout="@layout/fragment_fridge" />
+
+    <fragment
+        android:id="@+id/navigation_shopping_list"
+        android:name="com.distinct.kitchenmanager.ui.shopping_list.ShoppingListFragment"
+        android:label="@string/title_shopping_list"
+        tools:layout="@layout/fragment_shopping_list" />
+
+    <fragment
+        android:id="@+id/navigation_food_dairy"
+        android:name="com.distinct.kitchenmanager.ui.food_dairy.FoodDairyFragment"
+        android:label="@string/title_food_dairy"
+        tools:layout="@layout/fragment_food_dairy" />
+</navigation>
