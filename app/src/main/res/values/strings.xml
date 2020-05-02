@@ -34,5 +34,9 @@
     <string name="search">Search</string>
     <string name="ingredient">Ingredient</string>
     <string name="shelf_life">Shelf life</string>
+    <string name="move_to_fridge">Move to fridge</string>
+    <string name="consume_fully">Fully consume</string>
+    <string name="delete">Delete</string>
+    <string name="partly_consume">Partly consume</string>
 
 </resources>

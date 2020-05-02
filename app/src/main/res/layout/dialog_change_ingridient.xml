@@ -151,7 +151,7 @@
                     android:id="@+id/ingredient_amount_edit_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-
+                    android:gravity="end"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:ems="10"

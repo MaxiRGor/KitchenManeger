@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#C09AF4</color>
+
+    <color name="colorPrimary">#cc80ff</color>
+    <color name="colorPrimaryDark">#4c0080</color>
+    <color name="colorAccent">#ff0080</color>
+    <color name="colorButtonText">#000000</color>
+    <color name="white">#FFF</color>
+    
+
+
+<!--    <color name="colorPrimary">#C09AF4</color>
     <color name="colorPrimaryDark">#591BE4</color>
     <color name="colorAccent">#ED2449</color>
     <color name="colorButtonText">#000000</color>
@@ -9,5 +18,5 @@
     <color name="colorToDelete">#FF0000</color>
     <color name="colorToMoveToFridge">#0015FF</color>
     <color name="colorToMoveToShoppingList">#9D00FF</color>
-    <color name="colorToConsume">#1AFF00</color>
+    <color name="colorToConsume">#1AFF00</color>-->
 </resources>

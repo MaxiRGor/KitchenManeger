@@ -4,11 +4,11 @@
     xmlns:http="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="-4dp"
     android:focusable="true"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
+    app:cardPreventCornerOverlap="true">
 
     <LinearLayout
         android:id="@+id/item_shopping_list_linear_layout"
@@ -60,8 +60,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="2dp"
                         android:layout_marginEnd="4dp"
-                        android:text="@string/example_amount_of_ingredients_multiply"
-                         />
+                        android:text="@string/example_amount_of_ingredients_multiply" />
 
                 </LinearLayout>
 
@@ -92,8 +91,8 @@
         <LinearLayout
             android:id="@+id/ingredient_amount_linear_layout"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="3"
             android:gravity="center">
 

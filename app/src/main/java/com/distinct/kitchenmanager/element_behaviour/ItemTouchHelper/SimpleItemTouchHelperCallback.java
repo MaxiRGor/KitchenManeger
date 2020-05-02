@@ -3,7 +3,9 @@ package com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -12,14 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
 import com.distinct.kitchenmanager.R;
-import com.distinct.kitchenmanager.ui.fridge.FridgeViewHolder;
 import com.distinct.kitchenmanager.ui.shopping_list.ShoppingListViewHolder;
 
 public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final ItemTouchHelperAdapter mAdapter;
-    private int colorToMoveLeft;
-    private int colorToMoveRight;
+    private int colorOfSwipedItem;
+    private int colorToSwipedText;
 
     public SimpleItemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
         mAdapter = adapter;
@@ -40,20 +41,14 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         int dragFlags = 0; /*ItemTouchHelper.UP | ItemTouchHelper.DOWN;*/
         int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-        setColors(viewHolder);
+        setColors();
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
 
-    private void setColors(RecyclerView.ViewHolder viewHolder) {
-        if (viewHolder.getClass() == ShoppingListViewHolder.class) {
-            colorToMoveLeft = ContextCompat.getColor(ApplicationContextSingleton.getInstance().getApplicationContext(), R.color.colorToMoveToFridge);
-            colorToMoveRight = ContextCompat.getColor(ApplicationContextSingleton.getInstance().getApplicationContext(), R.color.colorToDelete);
-        } else if (viewHolder.getClass() == FridgeViewHolder.class) {
-            colorToMoveLeft = ContextCompat.getColor(ApplicationContextSingleton.getInstance().getApplicationContext(), R.color.colorToConsume);
-            colorToMoveRight = ContextCompat.getColor(ApplicationContextSingleton.getInstance().getApplicationContext(), R.color.colorToMoveToShoppingList);
-        }
-
+    private void setColors() {
+        colorOfSwipedItem = ContextCompat.getColor(ApplicationContextSingleton.getInstance().getApplicationContext(), R.color.colorPrimary);
+        colorToSwipedText = ContextCompat.getColor(ApplicationContextSingleton.getInstance().getApplicationContext(), R.color.white);
     }
 
     @Override
@@ -79,31 +74,48 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
                             @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
                             int actionState, boolean isCurrentlyActive) {
-
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
             Paint p = new Paint();
-            float width = (float) viewHolder.itemView.getWidth();
-            float alpha = 1.0f - Math.abs(dX) / width;
-            if (dX > 0) {
-                p.setColor(colorToMoveRight);
-                p.setAlpha(255 - (int) (alpha * 255));
-            } else if (dX < 0) {
-                p.setColor(colorToMoveLeft);
-                p.setAlpha(255 - (int) (alpha * 255));
-            } else p.setColor(Color.TRANSPARENT);
-
-            int bound = 16;
-           c.drawRect(viewHolder.itemView.getLeft(), viewHolder.itemView.getTop() + bound, viewHolder.itemView.getRight(), viewHolder.itemView.getBottom() - bound, p);
-
-
-
-            viewHolder.itemView.setAlpha(alpha);
+            int bound = 0;
+            if (dX != 0) p.setColor(colorOfSwipedItem);
+            else p.setColor(Color.TRANSPARENT);
+            c.drawRect(viewHolder.itemView.getLeft(), viewHolder.itemView.getTop() + bound, viewHolder.itemView.getRight(), viewHolder.itemView.getBottom() - bound, p);
             viewHolder.itemView.setTranslationX(dX);
+            drawText(dX, c, viewHolder.itemView, viewHolder);
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
                     actionState, isCurrentlyActive);
         }
+    }
+
+    private void drawText(float dX, Canvas c, View itemView, RecyclerView.ViewHolder viewHolder) {
+        Paint p = new Paint();
+        float textSize = 56;
+        int verticalBound = 16;
+        p.setColor(colorToSwipedText);
+        p.setAntiAlias(true);
+        p.setTextSize(textSize);
+        p.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD_ITALIC));
+        String text;
+        int x;
+        if (dX > 0) {
+            if (viewHolder.getClass() == ShoppingListViewHolder.class)
+                text = ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.delete);
+            else
+                text = ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.consume_fully);
+            x = verticalBound;
+        } else if (dX < 0) {
+            if (viewHolder.getClass() == ShoppingListViewHolder.class)
+                text = ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string. move_to_fridge);
+            else
+                text = ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.partly_consume);
+            x = itemView.getWidth() - verticalBound - (int) (p.measureText(text));
+        } else {
+            text = "";
+            x = 0;
+        }
+
+        c.drawText(text, x, itemView.getY() + ((itemView.getHeight() + textSize) / 2), p);
     }
 
 }
