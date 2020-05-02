@@ -43,7 +43,7 @@ public class IngredientListViewModel extends AndroidViewModel {
         return itemsToShow;
     }
 
-    public void getAllItems() {
+    public void showAllItems() {
         itemsToShow.setValue(allItems.getValue());
     }
 

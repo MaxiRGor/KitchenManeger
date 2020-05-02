@@ -1,4 +1,4 @@
-package com.distinct.kitchenmanager.ui.shopping_list;
+package com.distinct.kitchenmanager.ui.fridge;
 
 import android.app.Activity;
 import android.util.Log;
@@ -13,23 +13,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.ItemTouchHelperAdapter;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.distinct.kitchenmanager.ui.shopping_list.ShoppingListViewHolder;
+import com.distinct.kitchenmanager.ui.shopping_list.ShoppingListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
+public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
 
     private Activity activity;
     private FragmentManager fragmentManager;
-    private ShoppingListViewModel shoppingListViewModel;
+    private FridgeViewModel fridgeViewModel;
     private ArrayList<Ingredient> ingredients;
     private String[] weightTypes;
 
-    ShoppingListRecyclerAdapter(Activity context, FragmentManager fragmentManager, ShoppingListViewModel shoppingListViewModel) {
+    FridgeRecyclerAdapter(Activity context, FragmentManager fragmentManager, FridgeViewModel fridgeViewModel) {
         this.activity = context;
         this.fragmentManager = fragmentManager;
         this.ingredients = new ArrayList<>();
-        this.shoppingListViewModel = shoppingListViewModel;
+        this.fridgeViewModel = fridgeViewModel;
         this.weightTypes = context.getResources().getStringArray(R.array.weight_types);
     }
 
@@ -44,16 +46,16 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.item_shopping_list, parent, false);
-        return new ShoppingListViewHolder(view);
+        View view = LayoutInflater.from(activity).inflate(R.layout.item_fridge, parent, false);
+        return new FridgeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Ingredient ingredient = ingredients.get(position);
-        ShoppingListViewHolder viewHolder = (ShoppingListViewHolder) holder;
+        FridgeViewHolder viewHolder = (FridgeViewHolder) holder;
         viewHolder.fragmentManager = fragmentManager;
-        viewHolder.shoppingListViewModel = shoppingListViewModel;
+        viewHolder.fridgeViewModel = fridgeViewModel;
         viewHolder.bind(ingredient, weightTypes[ingredient.weightType]);
     }
 

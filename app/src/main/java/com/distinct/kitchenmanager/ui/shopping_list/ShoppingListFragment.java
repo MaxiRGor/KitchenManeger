@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -23,7 +22,6 @@ import java.util.List;
 public class ShoppingListFragment extends FragmentWithSearchView {
 
     private ShoppingListViewModel shoppingListViewModel;
-    private ShoppingListRecyclerAdapter shoppingListRecyclerAdapter;
     private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -31,28 +29,13 @@ public class ShoppingListFragment extends FragmentWithSearchView {
         shoppingListViewModel = new ViewModelProvider(this).get(ShoppingListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_shopping_list, container, false);
         recyclerView = root.findViewById(R.id.shopping_list_recycler_view);
-        setUpRecyclerAdapter();
         shoppingListViewModel.getItemsToShow().observe(getViewLifecycleOwner(), shoppingListItemsObserver);
         return root;
     }
 
-
-    private void setUpRecyclerAdapter() {
-        if (getActivity() != null) {
-            shoppingListRecyclerAdapter = new ShoppingListRecyclerAdapter(getActivity(), getChildFragmentManager(), shoppingListViewModel);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(shoppingListRecyclerAdapter);
-
-            ItemTouchHelper.Callback callback =
-                    new SimpleItemTouchHelperCallback(shoppingListRecyclerAdapter);
-            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-            touchHelper.attachToRecyclerView(recyclerView);
-        }
-    }
-
     @Override
     public void searchOnNullFilter() {
-        shoppingListViewModel.getAllItems();
+        shoppingListViewModel.showAllItems();
     }
 
     @Override
@@ -60,6 +43,23 @@ public class ShoppingListFragment extends FragmentWithSearchView {
         shoppingListViewModel.searchByIngredientName(searchText);
     }
 
-    private Observer<List<Ingredient>> shoppingListItemsObserver = shoppingListItems -> shoppingListRecyclerAdapter.setItems(shoppingListItems);
+    private Observer<List<Ingredient>> shoppingListItemsObserver = shoppingListItems -> {
+        if (getActivity() != null) {
+            ShoppingListRecyclerAdapter shoppingListRecyclerAdapter = new ShoppingListRecyclerAdapter(getActivity(), getChildFragmentManager(), shoppingListViewModel);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setAdapter(shoppingListRecyclerAdapter);
+            shoppingListRecyclerAdapter.setItems(shoppingListItems);
+
+            ItemTouchHelper.Callback callback =
+                    new SimpleItemTouchHelperCallback(shoppingListRecyclerAdapter);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            touchHelper.attachToRecyclerView(recyclerView);
+
+
+        }
+
+
+
+    };
 
 }

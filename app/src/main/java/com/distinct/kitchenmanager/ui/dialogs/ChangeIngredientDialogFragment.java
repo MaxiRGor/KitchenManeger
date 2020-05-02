@@ -173,8 +173,8 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
             else ingredientAmountEditText.setText(String.valueOf(item.amount));
         }
 
-        if (item.shelfLifeDate != 0)
-            shelfLifeTextView.setText(DateFormatter.getStringFromDateTime(item.shelfLifeDate));
+        if (item.shelfLifeTime != 0)
+            shelfLifeTextView.setText(DateFormatter.getStringFromDateTime(item.shelfLifeTime));
 
         int selectedRadioButtonId = 0;
         if (item.stageType == IngredientStageType.InBasket.ordinal())

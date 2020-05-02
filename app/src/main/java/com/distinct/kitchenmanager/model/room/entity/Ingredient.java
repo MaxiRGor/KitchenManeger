@@ -40,6 +40,6 @@ public class Ingredient {
     public int stageType;
 
     @ColumnInfo(name = "shelf_life")
-    public long shelfLifeDate;
+    public long shelfLifeTime;
 
 }

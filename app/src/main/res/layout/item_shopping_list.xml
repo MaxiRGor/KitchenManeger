@@ -11,6 +11,7 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/item_shopping_list_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -91,7 +92,8 @@
         <LinearLayout
             android:id="@+id/ingredient_amount_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
             android:layout_weight="3"
             android:gravity="center">
 
@@ -102,7 +104,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="2dp"
                 android:text="@string/hint_ingredient_amount"
-                android:textSize="@dimen/big_text_size"
+                android:textSize="@dimen/text_size"
                 android:textStyle="bold" />
 
             <TextView

@@ -119,16 +119,16 @@ public class ChangeIngredientViewModel extends ViewModel {
         calendar.set(year, month, day);
         Ingredient ingredient = ingredientLiveData.getValue();
         if (ingredient != null) {
-            ingredient.shelfLifeDate = calendar.getTime().getTime();
+            ingredient.shelfLifeTime = calendar.getTime().getTime();
             ingredientLiveData.setValue(ingredient);
         }
     }
 
     Calendar getShelfLifeDataCalendar() {
         Ingredient ingredient = ingredientLiveData.getValue();
-        if (ingredient != null && ingredient.shelfLifeDate != 0) {
+        if (ingredient != null && ingredient.shelfLifeTime != 0) {
             Date date = new Date();
-            date.setTime(ingredient.shelfLifeDate);
+            date.setTime(ingredient.shelfLifeTime);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             return calendar;

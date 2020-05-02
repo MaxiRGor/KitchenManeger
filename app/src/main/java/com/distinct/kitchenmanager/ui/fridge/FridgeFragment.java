@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -17,14 +16,12 @@ import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.SimpleItemTouchHelperCallback;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.fragment_with_search_view.FragmentWithSearchView;
-import com.distinct.kitchenmanager.ui.shopping_list.ShoppingListRecyclerAdapter;
 
 import java.util.List;
 
 public class FridgeFragment extends FragmentWithSearchView {
 
     private FridgeViewModel fridgeViewModel;
-
     private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -32,33 +29,31 @@ public class FridgeFragment extends FragmentWithSearchView {
         fridgeViewModel = new ViewModelProvider(this).get(FridgeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_fridge, container, false);
         recyclerView = root.findViewById(R.id.fridge_recycler_view);
-
-      //  fridgeViewModel.
-
-
+        fridgeViewModel.getItemsToShow().observe(getViewLifecycleOwner(), fridgeItemsObserver);
         return root;
     }
 
     @Override
     public void searchOnNullFilter() {
-
+        fridgeViewModel.showAllItems();
     }
 
     @Override
     public void searchByIngredientName(String searchText) {
-
+        fridgeViewModel.searchByIngredientName(searchText);
     }
 
-/*    private Observer<List<Ingredient>> shoppingListItemsObserver = shoppingListItems -> {
+    private Observer<List<Ingredient>> fridgeItemsObserver = fridgeItems -> {
         if (getActivity() != null) {
-            ShoppingListRecyclerAdapter shoppingListRecyclerAdapter = new ShoppingListRecyclerAdapter(getActivity(), shoppingListItems, getChildFragmentManager(), shoppingListViewModel);
+            FridgeRecyclerAdapter fridgeRecyclerAdapter = new FridgeRecyclerAdapter(getActivity(), getChildFragmentManager(), fridgeViewModel);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setAdapter(shoppingListRecyclerAdapter);
+            recyclerView.setAdapter(fridgeRecyclerAdapter);
+            fridgeRecyclerAdapter.setItems(fridgeItems);
 
             ItemTouchHelper.Callback callback =
-                    new SimpleItemTouchHelperCallback(shoppingListRecyclerAdapter);
+                    new SimpleItemTouchHelperCallback(fridgeRecyclerAdapter);
             ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
             touchHelper.attachToRecyclerView(recyclerView);
         }
-    };*/
+    };
 }
