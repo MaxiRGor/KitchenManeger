@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.distinct.kitchenmanager.R;
@@ -20,8 +21,7 @@ public class FoodDairyFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        foodDairyViewModel =
-                ViewModelProviders.of(this).get(FoodDairyViewModel.class);
+        foodDairyViewModel = new ViewModelProvider(this).get(FoodDairyViewModel.class);
         View root = inflater.inflate(R.layout.fragment_food_dairy, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         foodDairyViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {

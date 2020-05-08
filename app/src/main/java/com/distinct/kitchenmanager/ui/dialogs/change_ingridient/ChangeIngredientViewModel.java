@@ -1,4 +1,4 @@
-package com.distinct.kitchenmanager.ui.dialogs;
+package com.distinct.kitchenmanager.ui.dialogs.change_ingridient;
 
 import android.os.AsyncTask;
 
@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.database.AppDatabase;
-import com.distinct.kitchenmanager.model.room.database.DatabaseSource;
+import com.distinct.kitchenmanager.model.room.database.RoomAppDatabase;
+import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 
 import java.util.Calendar;
@@ -19,12 +19,12 @@ import java.util.List;
 public class ChangeIngredientViewModel extends ViewModel {
 
     int idOfIngredientToChange = -1;
-    private AppDatabase appDatabase;
+    private RoomAppDatabase roomAppDatabase;
     private MutableLiveData<Ingredient> ingredientLiveData;
     private MutableLiveData<String[]> ingredientNamesLiveData;
 
     public ChangeIngredientViewModel() {
-        appDatabase = DatabaseSource.getInstance(ApplicationContextSingleton.getInstance().getApplicationContext());
+        roomAppDatabase = RoomDatabaseSource.getInstance(ApplicationContextSingleton.getInstance().getApplicationContext());
         ingredientLiveData = new MutableLiveData<>();
         ingredientLiveData.postValue(new Ingredient(1));
 
@@ -44,7 +44,7 @@ public class ChangeIngredientViewModel extends ViewModel {
     private void getIngredientNamesFromDatabase() {
         AsyncTask.execute(() -> {
             HashSet<String> names = new HashSet<>();
-            List<Ingredient> ingredients = appDatabase.ingredientDao().getAll();
+            List<Ingredient> ingredients = roomAppDatabase.ingredientDao().getAll();
 
             for (Ingredient ingredient : ingredients) {
                 names.add(ingredient.name);
@@ -81,23 +81,23 @@ public class ChangeIngredientViewModel extends ViewModel {
         if (ingredient != null && ingredient.amountOfIngredients > 0) {
             ingredient.name = ingredientName;
             ingredient.manufacturer = manufacturerName;
-            ingredient.amount = ingredientAmount;
+            ingredient.amountOfDistinct = ingredientAmount;
             ingredient.weightType = weightType;
+            ingredient.fullAmount = ingredientAmount * ingredient.amountOfIngredients;
             ingredient.stageType = IngredientStageType.ToBuy.ordinal();
             ingredient.comment = comment;
             ingredient.stageType = stageTypeOrdinal;
-
             ingredientLiveData.setValue(ingredient);
         }
     }
 
     void addIngredientToDatabase() {
-        AsyncTask.execute(() -> appDatabase.ingredientDao().insert(ingredientLiveData.getValue()));
+        AsyncTask.execute(() -> roomAppDatabase.ingredientDao().insert(ingredientLiveData.getValue()));
     }
 
     void loadIngredientFromDatabase() {
         AsyncTask.execute(() -> {
-            Ingredient ingredient = appDatabase.ingredientDao().getById(idOfIngredientToChange);
+            Ingredient ingredient = roomAppDatabase.ingredientDao().getById(idOfIngredientToChange);
             ingredientLiveData.postValue(ingredient);
         });
     }
@@ -111,7 +111,7 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
     void updateIngredientInDatabase() {
-        AsyncTask.execute(() -> appDatabase.ingredientDao().update(ingredientLiveData.getValue()));
+        AsyncTask.execute(() -> roomAppDatabase.ingredientDao().update(ingredientLiveData.getValue()));
     }
 
     void setShelfLife(int year, int month, int day) {

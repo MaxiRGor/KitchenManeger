@@ -24,10 +24,10 @@ public class ShoppingListViewModel extends IngredientListViewModel {
             if (ingredient != null) {
                 if (isChecked && ingredient.stageType == IngredientStageType.ToBuy.ordinal()) {
                     ingredient.stageType = IngredientStageType.InBasket.ordinal();
-                    AsyncTask.execute(() -> appDatabase.ingredientDao().update(ingredient));
+                    AsyncTask.execute(() -> roomAppDatabase.ingredientDao().update(ingredient));
                 } else if (!isChecked && ingredient.stageType == IngredientStageType.InBasket.ordinal()) {
                     ingredient.stageType = IngredientStageType.ToBuy.ordinal();
-                    AsyncTask.execute(() -> appDatabase.ingredientDao().update(ingredient));
+                    AsyncTask.execute(() -> roomAppDatabase.ingredientDao().update(ingredient));
                 }
             }
         }

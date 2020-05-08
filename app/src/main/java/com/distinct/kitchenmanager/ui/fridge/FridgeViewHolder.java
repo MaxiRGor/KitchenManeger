@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.DateFormatter;
+import com.distinct.kitchenmanager.element_behaviour.FullAmountFormatter;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
-import com.distinct.kitchenmanager.ui.dialogs.ChangeIngredientDialogFragment;
+import com.distinct.kitchenmanager.ui.dialogs.change_ingridient.ChangeIngredientDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.text.DecimalFormat;
 
 public class FridgeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
@@ -35,7 +34,7 @@ public class FridgeViewHolder extends RecyclerView.ViewHolder implements View.On
 
     FridgeViewHolder(@NonNull View itemView) {
         super(itemView);
-        linearLayout  = itemView.findViewById(R.id.item_fridge_linear_layout);
+        linearLayout = itemView.findViewById(R.id.item_fridge_linear_layout);
         amountOfIngredientsLinearLayout = itemView.findViewById(R.id.amount_of_ingredients_linear_layout);
         amountOfIngredientsTextView = itemView.findViewById(R.id.amount_of_ingredients_text_view);
         ingredientNameTextView = itemView.findViewById(R.id.ingredient_name_text_view);
@@ -98,25 +97,36 @@ public class FridgeViewHolder extends RecyclerView.ViewHolder implements View.On
     }
 
     private void setAmount(Ingredient ingredient, String weightTypeString) {
-        if (ingredient.amount != 0) {
+        if (ingredient.amountOfDistinct != 0) {
+            ingredientAmountLinearLayout.setVisibility(View.VISIBLE);
+            ingredientAmountTextView.setText(FullAmountFormatter.geFormattedString(ingredient.fullAmount));
+            ingredientWeightTypeTextView.setText(weightTypeString);
+
+        } else ingredientAmountLinearLayout.setVisibility(View.GONE);
+    }
+
+    /*
+    private void setAmount(Ingredient ingredient, String weightTypeString) {
+        if (ingredient.amountOfDistinct != 0) {
             ingredientAmountLinearLayout.setVisibility(View.VISIBLE);
             String displayText;
-            if (ingredient.amount % (int) ingredient.amount == 0) { // amount == integer
+            if (ingredient.amountOfDistinct % (int) ingredient.amountOfDistinct == 0) { // amount == integer
                 if (ingredient.amountOfIngredients > 1) {
-                    displayText = String.valueOf((int) ingredient.amount * ingredient.amountOfIngredients);
+                    displayText = String.valueOf((int) ingredient.amountOfDistinct * ingredient.amountOfIngredients);
                 } else
-                    displayText = String.valueOf((int) ingredient.amount);
+                    displayText = String.valueOf((int) ingredient.amountOfDistinct);
             } else { // amount == float
                 if (ingredient.amountOfIngredients > 1) {
-                    displayText = new DecimalFormat(".##").format(ingredient.amount * ingredient.amountOfIngredients);
+                    displayText = new DecimalFormat(".##").format(ingredient.amountOfDistinct * ingredient.amountOfIngredients);
                 } else
-                    displayText = new DecimalFormat(".##").format(ingredient.amount);
+                    displayText = new DecimalFormat(".##").format(ingredient.amountOfDistinct);
             }
             ingredientAmountTextView.setText(displayText);
             ingredientWeightTypeTextView.setText(weightTypeString);
 
         } else ingredientAmountLinearLayout.setVisibility(View.GONE);
     }
+     */
 
 
 }

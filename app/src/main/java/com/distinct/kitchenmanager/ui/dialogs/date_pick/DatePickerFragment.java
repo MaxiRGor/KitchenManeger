@@ -1,4 +1,4 @@
-package com.distinct.kitchenmanager.ui.dialogs;
+package com.distinct.kitchenmanager.ui.dialogs.date_pick;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -32,7 +32,7 @@ public class DatePickerFragment extends DialogFragment
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
-    static DatePickerFragment newInstance(DialogFragment dialogFragment, Calendar calendar) {
+    public static DatePickerFragment newInstance(DialogFragment dialogFragment, Calendar calendar) {
 
         Bundle args = new Bundle();
 

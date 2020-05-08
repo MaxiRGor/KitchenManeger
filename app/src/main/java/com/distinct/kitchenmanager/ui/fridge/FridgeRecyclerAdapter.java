@@ -1,22 +1,28 @@
 package com.distinct.kitchenmanager.ui.fridge;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.ItemTouchHelperAdapter;
+import com.distinct.kitchenmanager.model.enums.IngredientStageType;
+import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
+import com.distinct.kitchenmanager.model.room.entity.Consumed;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
-import com.distinct.kitchenmanager.ui.shopping_list.ShoppingListViewHolder;
-import com.distinct.kitchenmanager.ui.shopping_list.ShoppingListViewModel;
+import com.distinct.kitchenmanager.ui.dialogs.consume_ingridient.ConsumeIngredientDialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
@@ -36,10 +42,10 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     void setItems(List<Ingredient> ingredients) {
-        if (ingredients != null){
+        if (ingredients != null) {
             this.ingredients.clear();
             this.ingredients.addAll(ingredients);
-        } else Log.d("a","no items");
+        } else Log.d("a", "no items");
 
     }
 
@@ -65,19 +71,53 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-/*    @Override
-    public void onItemMoveVertically(int fromPosition, int toPosition) {
-
-    }*/
 
     @Override
     public void onItemMovedToRight(int position) {
-/*        mItems.remove(position);
-        notifyItemRemoved(position);*/
+        //fully consume
+        if (arrayListNotContainsPosition(position)) {
+            notifyDataSetChanged();
+            showSnackbar(activity.getResources().getString(R.string.oops_try_again));
+        } else {
+            fullyConsumeIngredient(ingredients.get(position));
+        }
     }
+
 
     @Override
     public void onItemMovedToLeft(int position) {
+        //partly consume
+        if (arrayListNotContainsPosition(position)) {
+            notifyDataSetChanged();
+            showSnackbar(activity.getResources().getString(R.string.oops_try_again));
+        } else {
+            DialogFragment dialog = ConsumeIngredientDialogFragment.newInstance(ingredients.get(position).id);
+            dialog.show(fragmentManager, "ConsumeIngredientDialogFragment");
+        }
 
+
+    }
+
+    private void fullyConsumeIngredient(Ingredient ingredient) {
+        int calories = (int) (ingredient.caloriesInDistinct * (ingredient.fullAmount / ingredient.amountOfDistinct));
+        Consumed consumed = new Consumed(ingredient.name, calories, new Date().getTime());
+
+        ingredient.stageType = IngredientStageType.Consumed.ordinal();
+
+        AsyncTask.execute(() -> {
+            RoomDatabaseSource.getInstance(activity).consumedDao().insert(consumed);
+            RoomDatabaseSource.getInstance(activity).ingredientDao().update(ingredient);
+            showSnackbar(activity.getResources().getString(R.string.consumed));
+        });
+
+    }
+
+    private void showSnackbar(String text) {
+        Snackbar.make(activity.findViewById(R.id.fridge_recycler_view), text, Snackbar.LENGTH_LONG)
+                .show();
+    }
+
+    private boolean arrayListNotContainsPosition(int position) {
+        return ingredients.size() <= position || ingredients.get(position) == null;
     }
 }

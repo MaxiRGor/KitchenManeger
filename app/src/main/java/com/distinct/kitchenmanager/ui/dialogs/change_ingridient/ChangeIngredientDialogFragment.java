@@ -1,4 +1,4 @@
-package com.distinct.kitchenmanager.ui.dialogs;
+package com.distinct.kitchenmanager.ui.dialogs.change_ingridient;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +23,8 @@ import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.DateFormatter;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.distinct.kitchenmanager.ui.dialogs.date_pick.DatePickerFragment;
+import com.distinct.kitchenmanager.ui.dialogs.date_pick.OnDatePickedListener;
 
 import java.util.concurrent.Callable;
 
@@ -59,7 +61,6 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         root = inflater.inflate(R.layout.dialog_change_ingridient, container, false);
-        Log.d("b", "end onCreateView");
         return root;
     }
 
@@ -89,7 +90,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         ingredientAmountEditText = root.findViewById(R.id.ingredient_amount_edit_text);
         commentEditText = root.findViewById(R.id.comment_edit_text);
         amountOfIngredientsTextView = root.findViewById(R.id.amount_of_ingredients_text_view);
-        changeIngredientButton = root.findViewById(R.id.add_ingredient_button);
+        changeIngredientButton = root.findViewById(R.id.change_ingredient_button);
         weightTypesSpinner = root.findViewById(R.id.weight_types_spinner);
         stageTypeRadioGroup = root.findViewById(R.id.stage_type_radio_group);
         actionsDestinationNameTextView = root.findViewById(R.id.actions_destination_name_text_view);
@@ -167,10 +168,10 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         commentEditText.setText(item.comment);
         weightTypesSpinner.setSelection(item.weightType);
 
-        if (item.amount != 0) {
-            if (item.amount % (int) item.amount == 0)
-                ingredientAmountEditText.setText(String.valueOf((int) item.amount));
-            else ingredientAmountEditText.setText(String.valueOf(item.amount));
+        if (item.amountOfDistinct != 0) {
+            if (item.amountOfDistinct % (int) item.amountOfDistinct == 0)
+                ingredientAmountEditText.setText(String.valueOf((int) item.amountOfDistinct));
+            else ingredientAmountEditText.setText(String.valueOf(item.amountOfDistinct));
         }
 
         if (item.shelfLifeTime != 0)

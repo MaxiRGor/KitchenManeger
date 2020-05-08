@@ -1,6 +1,7 @@
 package com.distinct.kitchenmanager.ui.shopping_list;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.ItemTouchHelperAdapter;
+import com.distinct.kitchenmanager.model.enums.IngredientStageType;
+import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +38,10 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     void setItems(List<Ingredient> ingredients) {
-        if (ingredients != null){
+        if (ingredients != null) {
             this.ingredients.clear();
             this.ingredients.addAll(ingredients);
-        } else Log.d("a","no items");
+        } else Log.d("a", "no items");
 
     }
 
@@ -63,19 +67,43 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
 
-/*    @Override
-    public void onItemMoveVertically(int fromPosition, int toPosition) {
-
-    }*/
-
     @Override
     public void onItemMovedToRight(int position) {
-/*        mItems.remove(position);
-        notifyItemRemoved(position);*/
+        //delete
+        if (arrayListNotContainsPosition(position)) {
+            notifyDataSetChanged();
+            showSnackbar(activity.getResources().getString(R.string.oops_try_again));
+        } else {
+            AsyncTask.execute(() -> {
+                RoomDatabaseSource.getInstance(activity).ingredientDao().delete(ingredients.get(position));
+                showSnackbar(activity.getResources().getString(R.string.deleted));
+            });
+        }
     }
 
     @Override
     public void onItemMovedToLeft(int position) {
+        //move to fridge
+        if (arrayListNotContainsPosition(position)) {
+            notifyDataSetChanged();
+            showSnackbar(activity.getResources().getString(R.string.oops_try_again));
+        } else {
+            AsyncTask.execute(() -> {
+                Ingredient ingredient = ingredients.get(position);
+                ingredient.stageType = IngredientStageType.InFridge.ordinal();
+                RoomDatabaseSource.getInstance(activity).ingredientDao().update(ingredient);
+                showSnackbar(activity.getResources().getString(R.string.moved_to_fridge));
+            });
+        }
+    }
 
+
+    private void showSnackbar(String text) {
+        Snackbar.make(activity.findViewById(R.id.shopping_list_recycler_view), text, Snackbar.LENGTH_LONG)
+                .show();
+    }
+
+    private boolean arrayListNotContainsPosition(int position) {
+        return ingredients.size() <= position || ingredients.get(position) == null;
     }
 }

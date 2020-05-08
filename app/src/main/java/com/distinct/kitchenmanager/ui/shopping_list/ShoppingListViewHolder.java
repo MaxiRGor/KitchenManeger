@@ -12,12 +12,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
+import com.distinct.kitchenmanager.element_behaviour.FullAmountFormatter;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
-import com.distinct.kitchenmanager.ui.dialogs.ChangeIngredientDialogFragment;
+import com.distinct.kitchenmanager.ui.dialogs.change_ingridient.ChangeIngredientDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.text.DecimalFormat;
 
 public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, View.OnLongClickListener {
 
@@ -109,22 +108,9 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
     }
 
     private void setAmount(Ingredient ingredient, String weightTypeString) {
-        if (ingredient.amount != 0) {
+        if (ingredient.amountOfDistinct != 0) {
             ingredientAmountLinearLayout.setVisibility(View.VISIBLE);
-            String displayText;
-            if (ingredient.amount % (int) ingredient.amount == 0) { // amount == integer
-                if (ingredient.amountOfIngredients > 1) {
-                    displayText = String.valueOf((int) ingredient.amount * ingredient.amountOfIngredients);
-                } else
-                    displayText = String.valueOf((int) ingredient.amount);
-            } else { // amount == float
-                if (ingredient.amountOfIngredients > 1) {
-                    displayText = new DecimalFormat(".##").format(ingredient.amount * ingredient.amountOfIngredients);
-                } else
-                    displayText = new DecimalFormat(".##").format(ingredient.amount);
-
-            }
-            ingredientAmountTextView.setText(displayText);
+            ingredientAmountTextView.setText(FullAmountFormatter.geFormattedString(ingredient.fullAmount));
             ingredientWeightTypeTextView.setText(weightTypeString);
 
         } else ingredientAmountLinearLayout.setVisibility(View.GONE);

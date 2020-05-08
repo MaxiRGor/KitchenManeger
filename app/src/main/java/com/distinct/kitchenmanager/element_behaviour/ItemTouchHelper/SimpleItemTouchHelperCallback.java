@@ -83,9 +83,14 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
             viewHolder.itemView.setTranslationX(dX);
             drawText(dX, c, viewHolder.itemView, viewHolder);
         } else {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY,
+            super.onChildDraw(c, recyclerView, viewHolder, dX , dY,
                     actionState, isCurrentlyActive);
         }
+    }
+
+    @Override
+    public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        super.clearView(recyclerView, viewHolder);
     }
 
     private void drawText(float dX, Canvas c, View itemView, RecyclerView.ViewHolder viewHolder) {

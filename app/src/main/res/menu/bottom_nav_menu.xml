@@ -16,10 +16,6 @@
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/title_food_dairy" />
 
-    <item
-        android:id="@+id/navigation_gallery"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_gallery" />
 
     <item
         android:id="@+id/navigation_account"

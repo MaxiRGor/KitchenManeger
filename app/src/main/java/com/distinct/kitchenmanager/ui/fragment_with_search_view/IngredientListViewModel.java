@@ -9,15 +9,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.distinct.kitchenmanager.model.room.database.AppDatabase;
-import com.distinct.kitchenmanager.model.room.database.DatabaseSource;
+import com.distinct.kitchenmanager.model.room.database.RoomAppDatabase;
+import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 
 import java.util.List;
 
 public class IngredientListViewModel extends AndroidViewModel {
 
-    protected AppDatabase appDatabase;
+    protected RoomAppDatabase roomAppDatabase;
 
     protected LiveData<List<Ingredient>> allItems;
     private MutableLiveData<List<Ingredient>> foundItems;
@@ -27,14 +27,14 @@ public class IngredientListViewModel extends AndroidViewModel {
 
     public IngredientListViewModel(@NonNull Application application) {
         super(application);
-        appDatabase = DatabaseSource.getInstance(application);
+        roomAppDatabase = RoomDatabaseSource.getInstance(application);
         foundItems = new MutableLiveData<>();
         itemsToShow = new MediatorLiveData<>();
     }
 
     protected void init(int[] suitableStageTypes) {
         this.suitableStageTypes = suitableStageTypes;
-        allItems = appDatabase.ingredientDao().getAllByStageTypes(suitableStageTypes);
+        allItems = roomAppDatabase.ingredientDao().getAllByStageTypes(suitableStageTypes);
         itemsToShow.addSource(allItems, ingredients -> itemsToShow.setValue(ingredients));
         itemsToShow.addSource(foundItems, ingredients -> itemsToShow.setValue(ingredients));
     }
@@ -49,7 +49,7 @@ public class IngredientListViewModel extends AndroidViewModel {
 
     public void searchByIngredientName(String ingredientName) {
         AsyncTask.execute(() ->
-                foundItems.postValue(appDatabase.ingredientDao().getByStageTypesAndName(suitableStageTypes, ingredientName))
+                foundItems.postValue(roomAppDatabase.ingredientDao().getByStageTypesAndName(suitableStageTypes, ingredientName))
         );
     }
 
@@ -57,7 +57,7 @@ public class IngredientListViewModel extends AndroidViewModel {
         if (allItems.getValue() != null) {
             Ingredient ingredient = findUsingIterator(ingredientId, allItems.getValue());
             if (ingredient != null) {
-                AsyncTask.execute(() -> appDatabase.ingredientDao().delete(ingredient));
+                AsyncTask.execute(() -> roomAppDatabase.ingredientDao().delete(ingredient));
             }
         }
     }

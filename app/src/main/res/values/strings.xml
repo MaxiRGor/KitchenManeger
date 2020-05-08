@@ -38,5 +38,14 @@
     <string name="consume_fully">Fully consume</string>
     <string name="delete">Delete</string>
     <string name="partly_consume">Partly consume</string>
+    <string name="consume">Consume</string>
+    <string name="was_in_fridge">Was in fridge:</string>
+    <string name="example_was_in_fridge">726 g</string>
+    <string name="to_consume">To consume:</string>
+    <string name="example_to_consume">324 g</string>
+    <string name="oops_try_again">Ooops! Re-open page and try again</string>
+    <string name="consumed">Consumed</string>
+    <string name="deleted">Deleted</string>
+    <string name="moved_to_fridge">Moved to fridge</string>
 
 </resources>
