@@ -3,7 +3,6 @@ package com.distinct.kitchenmanager.ui.dialogs.change_ingridient;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +41,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
     private TextView amountOfIngredientsTextView;
     private TextView actionsDestinationNameTextView;
     private TextView shelfLifeTextView;
+    private TextView caloriesEditText;
     private RadioGroup stageTypeRadioGroup;
     private Button changeIngredientButton;
     private Spinner weightTypesSpinner;
@@ -91,6 +91,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         commentEditText = root.findViewById(R.id.comment_edit_text);
         amountOfIngredientsTextView = root.findViewById(R.id.amount_of_ingredients_text_view);
         changeIngredientButton = root.findViewById(R.id.change_ingredient_button);
+        caloriesEditText = root.findViewById(R.id.calories_edit_text);
         weightTypesSpinner = root.findViewById(R.id.weight_types_spinner);
         stageTypeRadioGroup = root.findViewById(R.id.stage_type_radio_group);
         actionsDestinationNameTextView = root.findViewById(R.id.actions_destination_name_text_view);
@@ -166,7 +167,11 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         manufacturerEditText.setText(item.manufacturer);
 
         commentEditText.setText(item.comment);
+
         weightTypesSpinner.setSelection(item.weightType);
+
+        if (item.caloriesInDistinct != 0)
+            caloriesEditText.setText(String.valueOf(item.caloriesInDistinct));
 
         if (item.amountOfDistinct != 0) {
             if (item.amountOfDistinct % (int) item.amountOfDistinct == 0)
@@ -234,12 +239,17 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         String manufacturerName = manufacturerEditText.getText().toString();
         String ingredientAmountString = ingredientAmountEditText.getText().toString();
         String comment = commentEditText.getText().toString();
+
         int weightType = weightTypesSpinner.getSelectedItemPosition();
         int selectedRadioButtonStage = stageTypeRadioGroup.getCheckedRadioButtonId();
         int stageTypeOrdinal = 0;
         float ingredientAmount = 0;
         if (!ingredientAmountString.equals(""))
             ingredientAmount = Float.parseFloat(ingredientAmountString);
+
+        int calories = 0;
+        if(!caloriesEditText.getText().toString().equals(""))
+            calories = Integer.parseInt(caloriesEditText.getText().toString());
 
         if (selectedRadioButtonStage == R.id.in_basket_radio_button)
             stageTypeOrdinal = IngredientStageType.InBasket.ordinal();
@@ -248,7 +258,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         else if (selectedRadioButtonStage == R.id.to_buy_radio_button)
             stageTypeOrdinal = IngredientStageType.ToBuy.ordinal();
 
-        changeIngredientViewModel.setValues(ingredientName, manufacturerName, ingredientAmount, weightType, comment, stageTypeOrdinal);
+        changeIngredientViewModel.setValues(ingredientName, manufacturerName, ingredientAmount, weightType, comment, stageTypeOrdinal,calories);
 
         try {
             task.call();
@@ -259,7 +269,6 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
 
     @Override
     public void onDateSet(int year, int month, int day) {
-        Log.d("a", "year = " + year);
         performActionAfterChecks(() -> {
             changeIngredientViewModel.setShelfLife(year, month, day);
             return null;

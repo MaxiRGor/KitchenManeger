@@ -87,7 +87,7 @@ public class ConsumeIngredientDialogFragment extends DialogFragment {
 
     private void setOnClickListener() {
         root.findViewById(R.id.consume_ingredient_button).setOnClickListener(view -> {
-            consumeIngredientViewModel.consumeIngredient();
+            consumeIngredientViewModel.consumeIngredient(getContext());
             dismiss();
         });
     }

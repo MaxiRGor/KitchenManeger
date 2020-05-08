@@ -70,8 +70,6 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return ingredients.size();
     }
 
-
-
     @Override
     public void onItemMovedToRight(int position) {
         //fully consume

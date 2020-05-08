@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Kitchen Manager</string>
-    <string name="title_fridge">Home</string>
+    <string name="title_fridge">Fridge</string>
     <string name="title_shopping_list">Shopping list</string>
     <string name="title_food_dairy">Food dairy</string>
-    <string name="title_gallery">Gallery</string>
+    <!--    <string name="title_gallery">Gallery</string>-->
     <string name="title_account">Account</string>
 
 
@@ -44,8 +44,36 @@
     <string name="to_consume">To consume:</string>
     <string name="example_to_consume">324 g</string>
     <string name="oops_try_again">Ooops! Re-open page and try again</string>
-    <string name="consumed">Consumed</string>
+    <string name="consumed">Fully consumed</string>
     <string name="deleted">Deleted</string>
     <string name="moved_to_fridge">Moved to fridge</string>
+    <string name="example_date">22/11/1963</string>
+    <string name="example_ingredient_name">Pizza</string>
+    <string name="example_consumed_calories">150</string>
+    <string name="calories">%d kcal</string>
+    <string name="nothing_consumed_that_day">Nothing consumed that day</string>
+    <string name="consumed_x_calories">Consumed %d kilo-calories</string>
+    <string name="hint_calories">Kilo-calories</string>
+    <string name="enter_your_name">Your name</string>
+    <string name="join_hint">If any of your family members are already using this application, you should note this in the selector below, ask him to share a unique refrigerator number
+        and enter the number in the appropriate field. If you are the first user, leave it as it is.</string>
+    <string name="authorize">Authorize</string>
+    <string name="already_in_use">Already using</string>
+    <string name="example_fridge_id">1cfew5g126df65rg41csdf4</string>
+    <string name="is_empty">Fill this field</string>
+
+    <string name="firestore_array_field_users">users</string>
+    <string name="firestore_collection_fridges">fridges</string>
+    <string name="incorrect_fridge_id">Incorrect fridge id</string>
+    <string name="id_fridge_preferences_field">ID_FRIDGE</string>
+    <string name="user_name_preferences_field">USER_NAME</string>
+    <string name="hello_user">Hello, %s!</string>
+    <string name="sign_out">Sign out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="fridge_id_hint">By this unique number other members of your family can join your fridge. Tap to copy to clipboard.</string>
+    <string name="users_now">By the moment, to your fridge joined %d members: %s </string>
+
+    <string name="copied">#%s copied</string>
+    <string name="confirm_question">This action cannot be reverted. Continue?</string>
 
 </resources>

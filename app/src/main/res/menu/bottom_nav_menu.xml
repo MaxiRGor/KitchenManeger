@@ -3,23 +3,23 @@
 
     <item
         android:id="@+id/navigation_fridge"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_fridge"
         android:title="@string/title_fridge" />
 
     <item
         android:id="@+id/navigation_shopping_list"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_list"
         android:title="@string/title_shopping_list" />
 
     <item
         android:id="@+id/navigation_food_dairy"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_food_dairy"
         android:title="@string/title_food_dairy" />
 
 
     <item
         android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_account"
         android:title="@string/title_account" />
 
 </menu>

@@ -22,4 +22,8 @@
         android:name="com.distinct.kitchenmanager.ui.food_dairy.FoodDairyFragment"
         android:label="@string/title_food_dairy"
         tools:layout="@layout/fragment_food_dairy" />
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.distinct.kitchenmanager.ui.account.AccountFragment"
+        android:label="@string/title_account" />
 </navigation>

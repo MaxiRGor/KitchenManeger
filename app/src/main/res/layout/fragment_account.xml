@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fridge_info_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/delete_account_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/delete_account" />
+
+                <Button
+                    android:id="@+id/sign_out_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_weight="1"
+                    android:text="@string/sign_out" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/user_name_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_margin="16dp"
+                android:gravity="center_vertical"
+                android:text="@string/hello_user"
+                android:textSize="@dimen/big_text_size" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/fridge_id_hint"
+                android:textSize="@dimen/text_size" />
+
+            <Button
+                android:id="@+id/copy_fridge_id_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/example_fridge_id"
+                android:textAllCaps="false"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintEnd_toEndOf="@+id/info_fridge_id_hint_text_view"
+                app:layout_constraintStart_toStartOf="@+id/info_fridge_id_hint_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/info_fridge_id_hint_text_view" />
+
+            <TextView
+                android:id="@+id/fridge_users_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/users_now"
+                android:textSize="@dimen/text_size"
+                app:layout_constraintEnd_toEndOf="@+id/info_fridge_id_hint_text_view"
+                app:layout_constraintStart_toStartOf="@+id/info_fridge_id_hint_text_view"
+                app:layout_constraintTop_toBottomOf="@+id/info_fridge_id_copy_button" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

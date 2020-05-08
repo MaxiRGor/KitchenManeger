@@ -76,7 +76,7 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
 
-    void setValues(String ingredientName, String manufacturerName, float ingredientAmount, int weightType, String comment, int stageTypeOrdinal) {
+    void setValues(String ingredientName, String manufacturerName, float ingredientAmount, int weightType, String comment, int stageTypeOrdinal, int calories) {
         Ingredient ingredient = ingredientLiveData.getValue();
         if (ingredient != null && ingredient.amountOfIngredients > 0) {
             ingredient.name = ingredientName;
@@ -87,6 +87,7 @@ public class ChangeIngredientViewModel extends ViewModel {
             ingredient.stageType = IngredientStageType.ToBuy.ordinal();
             ingredient.comment = comment;
             ingredient.stageType = stageTypeOrdinal;
+            ingredient.caloriesInDistinct = calories;
             ingredientLiveData.setValue(ingredient);
         }
     }

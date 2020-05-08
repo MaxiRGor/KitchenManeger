@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import java.util.Calendar;
 
@@ -32,13 +33,13 @@ public class DatePickerFragment extends DialogFragment
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
-    public static DatePickerFragment newInstance(DialogFragment dialogFragment, Calendar calendar) {
+    public static DatePickerFragment newInstance(Fragment parentFragment, Calendar calendar) {
 
         Bundle args = new Bundle();
 
         DatePickerFragment fragment = new DatePickerFragment();
         fragment.setArguments(args);
-        fragment.onDatePickedListener = (OnDatePickedListener) dialogFragment;
+        fragment.onDatePickedListener = (OnDatePickedListener) parentFragment;
         if (calendar != null) {
             fragment.day = calendar.get(Calendar.DATE);
             fragment.month = calendar.get(Calendar.MONTH);

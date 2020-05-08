@@ -1,17 +1,22 @@
 package com.distinct.kitchenmanager.ui.dialogs.consume_ingridient;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
+import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
 import com.distinct.kitchenmanager.model.room.database.RoomAppDatabase;
 import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
 import com.distinct.kitchenmanager.model.room.entity.Consumed;
 import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Date;
 
@@ -62,38 +67,48 @@ public class ConsumeIngredientViewModel extends ViewModel {
         this.weightTypes = weightTypes;
     }
 
-    void consumeIngredient() {
+    void consumeIngredient(Context context) {
         if (currentAmountToConsume.getValue() != null && ingredientLiveData.getValue() != null) {
             float amountToConsume = currentAmountToConsume.getValue();
             if (amountToConsume == ingredientLiveData.getValue().fullAmount)
-                fullyConsume(ingredientLiveData.getValue());
+                fullyConsume(ingredientLiveData.getValue(), context);
             else if (amountToConsume > 0)
-                partlyConsume(amountToConsume, ingredientLiveData.getValue());
+                partlyConsume(amountToConsume, ingredientLiveData.getValue(),context);
         }
     }
 
 
-    private void fullyConsume(Ingredient ingredient) {
+    private void fullyConsume(Ingredient ingredient, Context context) {
+        Log.d("aaa", "ingredient.caloriesInDistinct = " +ingredient.caloriesInDistinct );
+        Log.d("aaa", "ingredient.fullAmount = " +ingredient.fullAmount);
+        Log.d("aaa", " ingredient.amountOfDistinct = " + ingredient.amountOfDistinct);
         int calories = (int) (ingredient.caloriesInDistinct * (ingredient.fullAmount / ingredient.amountOfDistinct));
+        showToast(context, calories);
         Consumed consumed = new Consumed(ingredient.name, calories, new Date().getTime());
-
         ingredient.stageType = IngredientStageType.Consumed.ordinal();
-
         AsyncTask.execute(() -> {
             roomAppDatabase.consumedDao().insert(consumed);
             roomAppDatabase.ingredientDao().update(ingredient);
+
         });
     }
 
-    private void partlyConsume(float amountToConsume, Ingredient ingredient) {
+    private void partlyConsume(float amountToConsume, Ingredient ingredient,Context context) {
         int calories = (int) (ingredient.caloriesInDistinct * (amountToConsume / ingredient.amountOfDistinct));
+        showToast(context, calories);
         Consumed consumed = new Consumed(ingredient.name, calories, new Date().getTime());
         ingredient.fullAmount -= amountToConsume;
         ingredient.amountOfIngredients = ((int) (ingredient.fullAmount / ingredient.amountOfDistinct) + 1);
         AsyncTask.execute(() -> {
             roomAppDatabase.consumedDao().insert(consumed);
             roomAppDatabase.ingredientDao().update(ingredient);
+
         });
+    }
+
+    private void showToast(Context context, int calories) {
+        Log.d("aaa", "showing toast");
+        Toast.makeText(context,  String.format(ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.consumed_x_calories), calories), Toast.LENGTH_LONG).show();
     }
 
 }

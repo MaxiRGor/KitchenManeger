@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "699800920316",
+    "firebase_url": "https://kithchen-manager.firebaseio.com",
+    "project_id": "kithchen-manager",
+    "storage_bucket": "kithchen-manager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699800920316:android:a878f3f947bd91cf9eb779",
+        "android_client_info": {
+          "package_name": "com.distinct.kitchenmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699800920316-m51eauu539ijo00i7tfij3mc80qahiv3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.distinct.kitchenmanager",
+            "certificate_hash": "ab00903aca11c59dca018c29ecd20a59d2e54c45"
+          }
+        },
+        {
+          "client_id": "699800920316-0n02ojpk2pqc9mv6rrs7nr92bd5rju91.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxAVIOOFzXltBCLArsy-fWwiXoeB6EuNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699800920316-0n02ojpk2pqc9mv6rrs7nr92bd5rju91.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

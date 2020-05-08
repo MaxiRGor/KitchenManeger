@@ -14,11 +14,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String fridgeId;
+    private static String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ApplicationContextSingleton.getInstance().initialize(this);
+
+        fridgeId = getIntent().getStringExtra(getResources().getString(R.string.id_fridge_preferences_field));
+        userName = getIntent().getStringExtra(getResources().getString(R.string.user_name_preferences_field));
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -34,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
             dialog.show(getSupportFragmentManager(), "AddIngredientDialog");
         });
 
+    }
+
+    public static String getFridgeId() {
+        return fridgeId;
+    }
+
+    public static String getUserName() {
+        return userName;
     }
 
 }
