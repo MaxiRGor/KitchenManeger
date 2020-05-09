@@ -1,10 +1,10 @@
-package com.distinct.kitchenmanager.model.room.dao;
+package com.distinct.kitchenmanager.model.database.dao;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
 
 import java.util.List;
 

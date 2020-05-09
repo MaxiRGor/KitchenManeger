@@ -147,7 +147,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
     private void createNewFridge(String userName) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         Map<String, Object> fridgeInitData = new HashMap<>();
-        fridgeInitData.put(getString(R.string.firestore_array_field_users), Collections.singletonList(userName));                           //add a new one-component string list to a map
+        fridgeInitData.put(getString(R.string.firestore_field_array_fridge_members), Collections.singletonList(userName));                           //add a new one-component string list to a map
         DocumentReference fridge = firestore.collection(getString(R.string.firestore_collection_fridges)).document();                       //because arguments in document is absent (id==null), it creates a new document with random id
         fridge.set(fridgeInitData);                                                                                                         //and add to this doc info from HashMap
         writeSharedPreference(userName, R.string.user_name_preferences_field);
@@ -158,7 +158,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
 
     private void addUserToFridge(String fridgeId, String userName) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection(getString(R.string.firestore_collection_fridges)).document(fridgeId).update(getString(R.string.firestore_array_field_users), FieldValue.arrayUnion(userName));
+        firestore.collection(getString(R.string.firestore_collection_fridges)).document(fridgeId).update(getString(R.string.firestore_field_array_fridge_members), FieldValue.arrayUnion(userName));
         writeSharedPreference(userName, R.string.user_name_preferences_field);
         writeSharedPreference(fridgeId, R.string.id_fridge_preferences_field);
         startMainActivity(fridgeId);

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.DateFormatter;
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
 import com.distinct.kitchenmanager.ui.dialogs.date_pick.DatePickerFragment;
 import com.distinct.kitchenmanager.ui.dialogs.date_pick.OnDatePickedListener;
 import com.google.android.material.snackbar.Snackbar;

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
 import com.distinct.kitchenmanager.R;
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
 
 public class FoodDairyViewHolder extends RecyclerView.ViewHolder {
 

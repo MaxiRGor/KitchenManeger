@@ -1,4 +1,4 @@
-package com.distinct.kitchenmanager.model.room.entity;
+package com.distinct.kitchenmanager.model.database.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

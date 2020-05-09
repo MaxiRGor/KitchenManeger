@@ -3,7 +3,6 @@ package com.distinct.kitchenmanager.ui.dialogs.consume_ingridient;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
@@ -11,12 +10,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
 import com.distinct.kitchenmanager.R;
+import com.distinct.kitchenmanager.model.database.database.FirestoreDatabase;
+import com.distinct.kitchenmanager.model.database.database.FirestoreSource;
+import com.distinct.kitchenmanager.model.database.database.RoomAppDatabase;
+import com.distinct.kitchenmanager.model.database.database.RoomDatabaseSource;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.database.RoomAppDatabase;
-import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Date;
 
@@ -24,6 +24,7 @@ public class ConsumeIngredientViewModel extends ViewModel {
 
     public String weightType;
     private RoomAppDatabase roomAppDatabase;
+    private FirestoreDatabase firestoreDatabase;
     private MutableLiveData<Ingredient> ingredientLiveData;
     private MutableLiveData<Float> currentAmountToConsume;
     private String[] weightTypes;
@@ -31,6 +32,7 @@ public class ConsumeIngredientViewModel extends ViewModel {
 
     public ConsumeIngredientViewModel() {
         roomAppDatabase = RoomDatabaseSource.getInstance(ApplicationContextSingleton.getInstance().getApplicationContext());
+        firestoreDatabase = FirestoreSource.getInstance();
         ingredientLiveData = new MutableLiveData<>();
         currentAmountToConsume = new MutableLiveData<>();
         weightType = "";
@@ -45,13 +47,20 @@ public class ConsumeIngredientViewModel extends ViewModel {
         return ingredientLiveData;
     }
 
-    void loadIngredientFromDatabase(int idOfIngredient) {
-        AsyncTask.execute(() -> {
-            Ingredient ingredient = roomAppDatabase.ingredientDao().getById(idOfIngredient);
-            ingredientLiveData.postValue(ingredient);
-            currentAmountToConsume.postValue((float) ingredient.amountOfIngredients / 4);
-            weightType = weightTypes[ingredient.weightType];
+    void loadIngredientFromDatabase(String idOfIngredient) {
+        //     AsyncTask.execute(() -> {
+        firestoreDatabase.ingredientDao.getById(idOfIngredient).addSnapshotListener((documentSnapshot, e) -> {
+            if (documentSnapshot != null) {
+                Ingredient ingredient = documentSnapshot.toObject(Ingredient.class);
+                ingredientLiveData.postValue(ingredient);
+                if (ingredient != null) {
+                    currentAmountToConsume.postValue((float) ingredient.amountOfIngredients / 4);
+                    weightType = weightTypes[ingredient.weightType];
+                }
+            }
         });
+
+        //   });
     }
 
     MutableLiveData<Float> getCurrentAmountToConsume() {
@@ -73,14 +82,14 @@ public class ConsumeIngredientViewModel extends ViewModel {
             if (amountToConsume == ingredientLiveData.getValue().fullAmount)
                 fullyConsume(ingredientLiveData.getValue(), context);
             else if (amountToConsume > 0)
-                partlyConsume(amountToConsume, ingredientLiveData.getValue(),context);
+                partlyConsume(amountToConsume, ingredientLiveData.getValue(), context);
         }
     }
 
 
     private void fullyConsume(Ingredient ingredient, Context context) {
-        Log.d("aaa", "ingredient.caloriesInDistinct = " +ingredient.caloriesInDistinct );
-        Log.d("aaa", "ingredient.fullAmount = " +ingredient.fullAmount);
+        Log.d("aaa", "ingredient.caloriesInDistinct = " + ingredient.caloriesInDistinct);
+        Log.d("aaa", "ingredient.fullAmount = " + ingredient.fullAmount);
         Log.d("aaa", " ingredient.amountOfDistinct = " + ingredient.amountOfDistinct);
         int calories = (int) (ingredient.caloriesInDistinct * (ingredient.fullAmount / ingredient.amountOfDistinct));
         showToast(context, calories);
@@ -88,12 +97,12 @@ public class ConsumeIngredientViewModel extends ViewModel {
         ingredient.stageType = IngredientStageType.Consumed.ordinal();
         AsyncTask.execute(() -> {
             roomAppDatabase.consumedDao().insert(consumed);
-            roomAppDatabase.ingredientDao().update(ingredient);
+            firestoreDatabase.ingredientDao.update(ingredient);
 
         });
     }
 
-    private void partlyConsume(float amountToConsume, Ingredient ingredient,Context context) {
+    private void partlyConsume(float amountToConsume, Ingredient ingredient, Context context) {
         int calories = (int) (ingredient.caloriesInDistinct * (amountToConsume / ingredient.amountOfDistinct));
         showToast(context, calories);
         Consumed consumed = new Consumed(ingredient.name, calories, new Date().getTime());
@@ -101,14 +110,14 @@ public class ConsumeIngredientViewModel extends ViewModel {
         ingredient.amountOfIngredients = ((int) (ingredient.fullAmount / ingredient.amountOfDistinct) + 1);
         AsyncTask.execute(() -> {
             roomAppDatabase.consumedDao().insert(consumed);
-            roomAppDatabase.ingredientDao().update(ingredient);
+            firestoreDatabase.ingredientDao.update(ingredient);
 
         });
     }
 
     private void showToast(Context context, int calories) {
         Log.d("aaa", "showing toast");
-        Toast.makeText(context,  String.format(ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.consumed_x_calories), calories), Toast.LENGTH_LONG).show();
+        Toast.makeText(context, String.format(ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.consumed_x_calories), calories), Toast.LENGTH_LONG).show();
     }
 
 }

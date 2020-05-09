@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         findViewById(R.id.add_ingredient_floating_action_button).setOnClickListener(view -> {
-            DialogFragment dialog = ChangeIngredientDialogFragment.newInstance(-1);
+            DialogFragment dialog = ChangeIngredientDialogFragment.newInstance("");
             dialog.show(getSupportFragmentManager(), "AddIngredientDialog");
         });
 

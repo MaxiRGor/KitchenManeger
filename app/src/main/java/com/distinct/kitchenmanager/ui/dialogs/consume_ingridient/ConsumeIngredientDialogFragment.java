@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -27,11 +26,11 @@ public class ConsumeIngredientDialogFragment extends DialogFragment {
     private TextView amountToConsumeTextView;
     private SeekBar amountToConsumeSeekBar;
 
-    public static ConsumeIngredientDialogFragment newInstance(int ingredientId) {
+    public static ConsumeIngredientDialogFragment newInstance(String ingredientId) {
 
         ConsumeIngredientDialogFragment fragment = new ConsumeIngredientDialogFragment();
         Bundle args = new Bundle();
-        args.putInt(ingredientIdString, ingredientId);
+        args.putString(ingredientIdString, ingredientId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,7 +80,7 @@ public class ConsumeIngredientDialogFragment extends DialogFragment {
 
     private void loadIngredient() {
         if (getArguments() != null) {
-            consumeIngredientViewModel.loadIngredientFromDatabase(getArguments().getInt(ingredientIdString));
+            consumeIngredientViewModel.loadIngredientFromDatabase(getArguments().getString(ingredientIdString));
         }
     }
 

@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.ItemTouchHelperAdapter;
+import com.distinct.kitchenmanager.model.database.database.FirestoreSource;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -29,21 +29,17 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     private ArrayList<Ingredient> ingredients;
     private String[] weightTypes;
 
-    ShoppingListRecyclerAdapter(Activity context, FragmentManager fragmentManager, ShoppingListViewModel shoppingListViewModel) {
+    ShoppingListRecyclerAdapter(Activity context, List<Ingredient> shoppingListItems, FragmentManager fragmentManager, ShoppingListViewModel shoppingListViewModel) {
         this.activity = context;
         this.fragmentManager = fragmentManager;
         this.ingredients = new ArrayList<>();
+        this.ingredients.clear();
+        if (shoppingListItems != null)
+            this.ingredients.addAll(shoppingListItems);
         this.shoppingListViewModel = shoppingListViewModel;
         this.weightTypes = context.getResources().getStringArray(R.array.weight_types);
     }
 
-    void setItems(List<Ingredient> ingredients) {
-        if (ingredients != null) {
-            this.ingredients.clear();
-            this.ingredients.addAll(ingredients);
-        } else Log.d("a", "no items");
-
-    }
 
     @NonNull
     @Override
@@ -54,6 +50,7 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Log.d("asad", "ingredients.size() = " + this.ingredients.size());
         Ingredient ingredient = ingredients.get(position);
         ShoppingListViewHolder viewHolder = (ShoppingListViewHolder) holder;
         viewHolder.fragmentManager = fragmentManager;
@@ -75,7 +72,7 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             showSnackbar(activity.getResources().getString(R.string.oops_try_again));
         } else {
             AsyncTask.execute(() -> {
-                RoomDatabaseSource.getInstance(activity).ingredientDao().delete(ingredients.get(position));
+                FirestoreSource.getInstance().ingredientDao.delete(ingredients.get(position));
                 showSnackbar(activity.getResources().getString(R.string.deleted));
             });
         }
@@ -83,15 +80,15 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onItemMovedToLeft(int position) {
+        Log.d("aaa", "pos = " + position);
         //move to fridge
         if (arrayListNotContainsPosition(position)) {
-            notifyDataSetChanged();
             showSnackbar(activity.getResources().getString(R.string.oops_try_again));
         } else {
             AsyncTask.execute(() -> {
                 Ingredient ingredient = ingredients.get(position);
                 ingredient.stageType = IngredientStageType.InFridge.ordinal();
-                RoomDatabaseSource.getInstance(activity).ingredientDao().update(ingredient);
+                FirestoreSource.getInstance().ingredientDao.update(ingredient);
                 showSnackbar(activity.getResources().getString(R.string.moved_to_fridge));
             });
         }
@@ -104,6 +101,8 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private boolean arrayListNotContainsPosition(int position) {
-        return ingredients.size() <= position || ingredients.get(position) == null;
+        Log.d("aaa", "ingredients.size() = " + this.ingredients.size());
+       // Log.d("aaa", "ingredients.size() = " + ingredients.size());
+        return this.ingredients.size() <= position || this.ingredients.get(position) == null;
     }
 }

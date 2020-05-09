@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.FullAmountFormatter;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.dialogs.change_ingridient.ChangeIngredientDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -22,7 +22,7 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
 
     FragmentManager fragmentManager;
     ShoppingListViewModel shoppingListViewModel;
-    private LinearLayout linearLayout;
+ //   private LinearLayout linearLayout;
     private Ingredient ingredient;
     private CheckBox isInBasketCheckbox;
     private LinearLayout amountOfIngredientsLinearLayout;
@@ -36,7 +36,7 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
 
     ShoppingListViewHolder(@NonNull View itemView) {
         super(itemView);
-        linearLayout = itemView.findViewById(R.id.item_shopping_list_linear_layout);
+    //    linearLayout = itemView.findViewById(R.id.item_shopping_list_linear_layout);
         isInBasketCheckbox = itemView.findViewById(R.id.is_in_basket_checkbox);
         amountOfIngredientsLinearLayout = itemView.findViewById(R.id.amount_of_ingredients_linear_layout);
         amountOfIngredientsTextView = itemView.findViewById(R.id.amount_of_ingredients_text_view);

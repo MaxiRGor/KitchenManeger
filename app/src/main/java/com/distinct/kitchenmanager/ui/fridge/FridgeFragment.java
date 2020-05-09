@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.SimpleItemTouchHelperCallback;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.fragment_with_search_view.FragmentWithSearchView;
 
 import java.util.List;
@@ -23,6 +23,7 @@ public class FridgeFragment extends FragmentWithSearchView {
 
     private FridgeViewModel fridgeViewModel;
     private RecyclerView recyclerView;
+    private ItemTouchHelper touchHelper;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,14 +46,16 @@ public class FridgeFragment extends FragmentWithSearchView {
 
     private Observer<List<Ingredient>> fridgeItemsObserver = fridgeItems -> {
         if (getActivity() != null) {
-            FridgeRecyclerAdapter fridgeRecyclerAdapter = new FridgeRecyclerAdapter(getActivity(), getChildFragmentManager(), fridgeViewModel);
+            FridgeRecyclerAdapter fridgeRecyclerAdapter = new FridgeRecyclerAdapter(getActivity(), fridgeItems, getChildFragmentManager(), fridgeViewModel);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(fridgeRecyclerAdapter);
-            fridgeRecyclerAdapter.setItems(fridgeItems);
 
-            ItemTouchHelper.Callback callback =
-                    new SimpleItemTouchHelperCallback(fridgeRecyclerAdapter);
-            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            if (touchHelper != null)
+                touchHelper.attachToRecyclerView(null);
+
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(fridgeRecyclerAdapter);
+            touchHelper = new ItemTouchHelper(callback);
+
             touchHelper.attachToRecyclerView(recyclerView);
         }
     };

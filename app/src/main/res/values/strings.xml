@@ -62,8 +62,7 @@
     <string name="example_fridge_id">1cfew5g126df65rg41csdf4</string>
     <string name="is_empty">Fill this field</string>
 
-    <string name="firestore_array_field_users">users</string>
-    <string name="firestore_collection_fridges">fridges</string>
+
     <string name="incorrect_fridge_id">Incorrect fridge id</string>
     <string name="id_fridge_preferences_field">ID_FRIDGE</string>
     <string name="user_name_preferences_field">USER_NAME</string>
@@ -75,5 +74,21 @@
 
     <string name="copied">#%s copied</string>
     <string name="confirm_question">This action cannot be reverted. Continue?</string>
+
+    <string name="firestore_field_array_fridge_members">members</string>
+    <string name="firestore_collection_fridges">fridges</string>
+    <string name="firestore_collection_ingredients">ingredients</string>
+    <string name="firestore_field_ingredient_id">id</string>;
+    <string name="firestore_field_ingredient_name">name</string>
+    <string name="firestore_field_ingredient_manufacturer">manufacturer</string>
+    <string name="firestore_field_ingredient_weight_type">weightType</string>
+    <string name="firestore_field_ingredient_amount_of_distinct">amountOfDistinct</string>
+    <string name="firestore_field_ingredient_amount_df_ingredients">amountOfIngredients</string>
+    <string name="firestore_field_ingredient_full_amount">fullAmount</string>
+    <string name="firestore_field_ingredient_calories_in_distinct">caloriesInDistinct</string>
+    <string name="firestore_field_ingredient_comment">comment</string>
+    <string name="firestore_field_ingredient_stage_type">stageType</string>
+    <string name="firestore_field_ingredient_shelf_life_time">shelfLifeTime</string>
+
 
 </resources>

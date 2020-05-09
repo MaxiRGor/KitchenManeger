@@ -1,16 +1,15 @@
 package com.distinct.kitchenmanager.ui.dialogs.change_ingridient;
 
-import android.os.AsyncTask;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.distinct.kitchenmanager.ApplicationContextSingleton;
+import com.distinct.kitchenmanager.model.database.database.FirestoreDatabase;
+import com.distinct.kitchenmanager.model.database.database.FirestoreSource;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.database.RoomAppDatabase;
-import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,16 +17,15 @@ import java.util.List;
 
 public class ChangeIngredientViewModel extends ViewModel {
 
-    int idOfIngredientToChange = -1;
-    private RoomAppDatabase roomAppDatabase;
+    String idOfIngredientToChange = "";
+    private FirestoreDatabase firestoreDatabase;
     private MutableLiveData<Ingredient> ingredientLiveData;
     private MutableLiveData<String[]> ingredientNamesLiveData;
 
     public ChangeIngredientViewModel() {
-        roomAppDatabase = RoomDatabaseSource.getInstance(ApplicationContextSingleton.getInstance().getApplicationContext());
+        firestoreDatabase = FirestoreSource.getInstance();
         ingredientLiveData = new MutableLiveData<>();
         ingredientLiveData.postValue(new Ingredient(1));
-
         ingredientNamesLiveData = new MutableLiveData<>();
         getIngredientNamesFromDatabase();
     }
@@ -42,19 +40,29 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
     private void getIngredientNamesFromDatabase() {
-        AsyncTask.execute(() -> {
-            HashSet<String> names = new HashSet<>();
-            List<Ingredient> ingredients = roomAppDatabase.ingredientDao().getAll();
+        //  AsyncTask.execute(() -> {
+        firestoreDatabase.ingredientDao.getAll().addSnapshotListener((queryDocumentSnapshots, e) -> {
+            if (queryDocumentSnapshots != null) {
 
-            for (Ingredient ingredient : ingredients) {
-                names.add(ingredient.name);
+
+                List<Ingredient> ingredients = new ArrayList<>();
+                for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    Ingredient ingredient = doc.toObject(Ingredient.class);
+                    ingredients.add(ingredient);
+                }
+
+                HashSet<String> names = new HashSet<>();
+                for (Ingredient ingredient : ingredients) {
+                    names.add(ingredient.name);
+                }
+                String[] namesArray = new String[names.size()];
+                names.toArray(namesArray);
+                ingredientNamesLiveData.postValue(namesArray);
             }
-
-            String[] namesArray = new String[names.size()];
-            names.toArray(namesArray);
-            ingredientNamesLiveData.postValue(namesArray);
-
         });
+
+
+        //    });
 
     }
 
@@ -76,7 +84,8 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
 
-    void setValues(String ingredientName, String manufacturerName, float ingredientAmount, int weightType, String comment, int stageTypeOrdinal, int calories) {
+    void setValues(String ingredientName, String manufacturerName, float ingredientAmount,
+                   int weightType, String comment, int stageTypeOrdinal, int calories) {
         Ingredient ingredient = ingredientLiveData.getValue();
         if (ingredient != null && ingredient.amountOfIngredients > 0) {
             ingredient.name = ingredientName;
@@ -93,14 +102,20 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
     void addIngredientToDatabase() {
-        AsyncTask.execute(() -> roomAppDatabase.ingredientDao().insert(ingredientLiveData.getValue()));
+        // AsyncTask.execute(() ->
+        firestoreDatabase.ingredientDao.insert(ingredientLiveData.getValue());
+        //);
     }
 
     void loadIngredientFromDatabase() {
-        AsyncTask.execute(() -> {
-            Ingredient ingredient = roomAppDatabase.ingredientDao().getById(idOfIngredientToChange);
-            ingredientLiveData.postValue(ingredient);
+        // AsyncTask.execute(() -> {
+        firestoreDatabase.ingredientDao.getById(idOfIngredientToChange).addSnapshotListener((documentSnapshot, e) -> {
+            if (documentSnapshot != null) {
+                ingredientLiveData.postValue(documentSnapshot.toObject(Ingredient.class));
+            }
         });
+
+        //    });
     }
 
     void setIngredientId() {
@@ -112,7 +127,10 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
     void updateIngredientInDatabase() {
-        AsyncTask.execute(() -> roomAppDatabase.ingredientDao().update(ingredientLiveData.getValue()));
+        //  AsyncTask.execute(() -> {
+        if (ingredientLiveData.getValue() != null)
+            firestoreDatabase.ingredientDao.update(ingredientLiveData.getValue());
+        //  });
     }
 
     void setShelfLife(int year, int month, int day) {

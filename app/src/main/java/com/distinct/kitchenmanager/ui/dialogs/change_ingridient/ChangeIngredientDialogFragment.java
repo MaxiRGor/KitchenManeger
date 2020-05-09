@@ -20,8 +20,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.DateFormatter;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.dialogs.date_pick.DatePickerFragment;
 import com.distinct.kitchenmanager.ui.dialogs.date_pick.OnDatePickedListener;
 
@@ -47,11 +47,11 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
     private Spinner weightTypesSpinner;
 
 
-    public static ChangeIngredientDialogFragment newInstance(int ingredientId) {
+    public static ChangeIngredientDialogFragment newInstance(String ingredientId) {
 
         ChangeIngredientDialogFragment fragment = new ChangeIngredientDialogFragment();
         Bundle args = new Bundle();
-        args.putInt(ingredientIdString, ingredientId);
+        args.putString(ingredientIdString, ingredientId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -117,8 +117,8 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
 
     private void checkIfIngredientExists() {
         if (getArguments() != null) {
-            changeIngredientViewModel.idOfIngredientToChange = getArguments().getInt(ingredientIdString);
-            if (changeIngredientViewModel.idOfIngredientToChange >= 0) {
+            changeIngredientViewModel.idOfIngredientToChange = getArguments().getString(ingredientIdString);
+            if (changeIngredientViewModel.idOfIngredientToChange != null && !changeIngredientViewModel.idOfIngredientToChange.equals("")) {
                 if (getDialog() != null)
                     getDialog().setTitle(R.string.change_ingredient);
                 actionsDestinationNameTextView.setText(R.string.move_to);
@@ -136,7 +136,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
     private void setOnClickListeners(View root) {
         root.findViewById(R.id.subtract_from_amount_of_ingredients_button).setOnClickListener(subtractIngredient);
         root.findViewById(R.id.add_to_amount_of_ingredients_button).setOnClickListener(addIngredient);
-        if (changeIngredientViewModel.idOfIngredientToChange >= 0) {
+        if (changeIngredientViewModel.idOfIngredientToChange != null && !changeIngredientViewModel.idOfIngredientToChange.equals("")) {
             changeIngredientButton.setOnClickListener(saveIngredient);
             changeIngredientButton.setText(R.string.save);
         } else {
@@ -248,7 +248,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
             ingredientAmount = Float.parseFloat(ingredientAmountString);
 
         int calories = 0;
-        if(!caloriesEditText.getText().toString().equals(""))
+        if (!caloriesEditText.getText().toString().equals(""))
             calories = Integer.parseInt(caloriesEditText.getText().toString());
 
         if (selectedRadioButtonStage == R.id.in_basket_radio_button)
@@ -258,7 +258,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         else if (selectedRadioButtonStage == R.id.to_buy_radio_button)
             stageTypeOrdinal = IngredientStageType.ToBuy.ordinal();
 
-        changeIngredientViewModel.setValues(ingredientName, manufacturerName, ingredientAmount, weightType, comment, stageTypeOrdinal,calories);
+        changeIngredientViewModel.setValues(ingredientName, manufacturerName, ingredientAmount, weightType, comment, stageTypeOrdinal, calories);
 
         try {
             task.call();

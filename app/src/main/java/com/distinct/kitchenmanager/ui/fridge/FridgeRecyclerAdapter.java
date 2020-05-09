@@ -2,7 +2,6 @@ package com.distinct.kitchenmanager.ui.fridge;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.ItemTouchHelperAdapter;
+import com.distinct.kitchenmanager.model.database.database.FirestoreSource;
+import com.distinct.kitchenmanager.model.database.database.RoomDatabaseSource;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
-import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.dialogs.consume_ingridient.ConsumeIngredientDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -33,21 +33,17 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private ArrayList<Ingredient> ingredients;
     private String[] weightTypes;
 
-    FridgeRecyclerAdapter(Activity context, FragmentManager fragmentManager, FridgeViewModel fridgeViewModel) {
+    FridgeRecyclerAdapter(Activity context, List<Ingredient> ingredients, FragmentManager fragmentManager, FridgeViewModel fridgeViewModel) {
         this.activity = context;
         this.fragmentManager = fragmentManager;
         this.ingredients = new ArrayList<>();
+        this.ingredients.clear();
+        if (ingredients != null)
+            this.ingredients.addAll(ingredients);
         this.fridgeViewModel = fridgeViewModel;
         this.weightTypes = context.getResources().getStringArray(R.array.weight_types);
     }
 
-    void setItems(List<Ingredient> ingredients) {
-        if (ingredients != null) {
-            this.ingredients.clear();
-            this.ingredients.addAll(ingredients);
-        } else Log.d("a", "no items");
-
-    }
 
     @NonNull
     @Override
@@ -86,7 +82,6 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onItemMovedToLeft(int position) {
         //partly consume
         if (arrayListNotContainsPosition(position)) {
-            notifyDataSetChanged();
             showSnackbar(activity.getResources().getString(R.string.oops_try_again));
         } else {
             DialogFragment dialog = ConsumeIngredientDialogFragment.newInstance(ingredients.get(position).id);
@@ -99,12 +94,11 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private void fullyConsumeIngredient(Ingredient ingredient) {
         int calories = (int) (ingredient.caloriesInDistinct * (ingredient.fullAmount / ingredient.amountOfDistinct));
         Consumed consumed = new Consumed(ingredient.name, calories, new Date().getTime());
-
         ingredient.stageType = IngredientStageType.Consumed.ordinal();
 
         AsyncTask.execute(() -> {
             RoomDatabaseSource.getInstance(activity).consumedDao().insert(consumed);
-            RoomDatabaseSource.getInstance(activity).ingredientDao().update(ingredient);
+            FirestoreSource.getInstance().ingredientDao.update(ingredient);
             showSnackbar(activity.getResources().getString(R.string.consumed));
         });
 

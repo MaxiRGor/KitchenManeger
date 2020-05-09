@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
-import com.distinct.kitchenmanager.model.room.database.RoomAppDatabase;
-import com.distinct.kitchenmanager.model.room.database.RoomDatabaseSource;
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.database.RoomAppDatabase;
+import com.distinct.kitchenmanager.model.database.database.RoomDatabaseSource;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
 
 import java.util.Calendar;
 import java.util.List;

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
-import com.distinct.kitchenmanager.model.room.entity.Consumed;
+import com.distinct.kitchenmanager.model.database.entity.Consumed;
 
 import java.util.ArrayList;
 import java.util.List;

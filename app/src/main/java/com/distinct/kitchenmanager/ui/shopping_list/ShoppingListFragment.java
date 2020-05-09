@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.element_behaviour.ItemTouchHelper.SimpleItemTouchHelperCallback;
-import com.distinct.kitchenmanager.model.room.entity.Ingredient;
+import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.fragment_with_search_view.FragmentWithSearchView;
 
 import java.util.List;
@@ -23,6 +23,7 @@ public class ShoppingListFragment extends FragmentWithSearchView {
 
     private ShoppingListViewModel shoppingListViewModel;
     private RecyclerView recyclerView;
+    private ItemTouchHelper touchHelper;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,19 +46,19 @@ public class ShoppingListFragment extends FragmentWithSearchView {
 
     private Observer<List<Ingredient>> shoppingListItemsObserver = shoppingListItems -> {
         if (getActivity() != null) {
-            ShoppingListRecyclerAdapter shoppingListRecyclerAdapter = new ShoppingListRecyclerAdapter(getActivity(), getChildFragmentManager(), shoppingListViewModel);
+            ShoppingListRecyclerAdapter shoppingListRecyclerAdapter = new ShoppingListRecyclerAdapter(getActivity(), shoppingListItems, getChildFragmentManager(), shoppingListViewModel);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(shoppingListRecyclerAdapter);
-            shoppingListRecyclerAdapter.setItems(shoppingListItems);
+            shoppingListRecyclerAdapter.notifyDataSetChanged();
 
-            ItemTouchHelper.Callback callback =
-                    new SimpleItemTouchHelperCallback(shoppingListRecyclerAdapter);
-            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            if(touchHelper!=null)
+                touchHelper.attachToRecyclerView(null);
+
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(shoppingListRecyclerAdapter);
+            touchHelper = new ItemTouchHelper(callback);
+
             touchHelper.attachToRecyclerView(recyclerView);
-
-
         }
-
 
 
     };

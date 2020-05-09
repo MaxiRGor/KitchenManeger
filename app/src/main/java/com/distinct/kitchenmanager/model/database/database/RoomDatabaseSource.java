@@ -1,4 +1,5 @@
-package com.distinct.kitchenmanager.model.room.database;
+package com.distinct.kitchenmanager.model.database.database;
+
 
 import android.content.Context;
 
@@ -19,3 +20,4 @@ public class RoomDatabaseSource {
         return instance;
     }
 }
+
