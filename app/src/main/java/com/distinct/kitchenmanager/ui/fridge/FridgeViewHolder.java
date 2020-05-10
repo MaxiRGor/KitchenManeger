@@ -16,7 +16,7 @@ import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.dialogs.change_ingridient.ChangeIngredientDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 
-public class FridgeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public class FridgeViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
 
     FragmentManager fragmentManager;
     FridgeViewModel fridgeViewModel;
@@ -41,15 +41,15 @@ public class FridgeViewHolder extends RecyclerView.ViewHolder implements View.On
         ingredientAmountLinearLayout = itemView.findViewById(R.id.ingredient_amount_linear_layout);
         manufacturerTextView = itemView.findViewById(R.id.manufacturer_text_view);
         shelfLifeTextView = itemView.findViewById(R.id.shelf_life_text_view);
-        itemView.setOnClickListener(this);
+       // itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
     }
 
-    @Override
+/*    @Override
     public void onClick(View view) {
         DialogFragment dialog = ChangeIngredientDialogFragment.newInstance(ingredient.id);
         dialog.show(fragmentManager, "ChangeIngredientDialog");
-    }
+    }*/
 
 
     @Override

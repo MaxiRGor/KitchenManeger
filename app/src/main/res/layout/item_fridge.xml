@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="-4dp"
+    android:minHeight="48dp"
     android:focusable="true"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
@@ -14,7 +15,7 @@
         android:id="@+id/item_fridge_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal">
 
 
