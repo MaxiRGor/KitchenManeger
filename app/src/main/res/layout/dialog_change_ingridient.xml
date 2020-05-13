@@ -39,6 +39,113 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp">
 
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/categories_chips_linear_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                </LinearLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/ingredient_amount_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:gravity="end"
+                    android:hint="@string/hint_ingredient_amount"
+                    android:inputType="numberDecimal" />
+
+
+                <Spinner
+                    android:id="@+id/weight_types_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0">
+
+                <Button
+                    android:id="@+id/subtract_from_amount_of_ingredients_button"
+                    style="@style/RoundButtonStyle"
+                    android:layout_gravity="center"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/amount_of_ingredients_text_view"
+                    android:layout_width="36dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="@string/example_amount_of_ingredients"
+                    android:textSize="@dimen/big_text_size" />
+
+                <Button
+                    android:id="@+id/add_to_amount_of_ingredients_button"
+                    style="@style/RoundButtonStyle"
+                    android:text="+" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp">
+
+            <EditText
+                android:id="@+id/calories_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:gravity="center_vertical"
+                android:hint="@string/hint_calories"
+                android:inputType="number"
+                android:paddingHorizontal="12dp"
+                android:textSize="@dimen/text_size" />
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp">
+
             <AutoCompleteTextView
                 android:id="@+id/manufacturer_edit_text"
                 android:layout_width="0dp"
@@ -73,23 +180,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp">
 
-            <EditText
-                android:id="@+id/calories_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:hint="@string/hint_calories"
-                android:inputType="number"
-                android:paddingHorizontal="12dp"
-                android:textSize="@dimen/text_size" />
-
-
-        </LinearLayout>
 
 
         <LinearLayout
@@ -154,68 +245,7 @@
             </RadioGroup>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/ingredient_amount_edit_text"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:gravity="end"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/hint_ingredient_amount"
-                    android:inputType="numberDecimal" />
-
-
-                <Spinner
-                    android:id="@+id/weight_types_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="0">
-
-                <Button
-                    android:id="@+id/subtract_from_amount_of_ingredients_button"
-                    style="@style/RoundButtonStyle"
-
-                    android:text="-" />
-
-                <TextView
-                    android:id="@+id/amount_of_ingredients_text_view"
-                    android:layout_width="36dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:text="@string/example_amount_of_ingredients"
-                    android:textSize="@dimen/big_text_size" />
-
-                <Button
-                    android:id="@+id/add_to_amount_of_ingredients_button"
-                    style="@style/RoundButtonStyle"
-                    android:text="+" />
-            </LinearLayout>
-
-
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

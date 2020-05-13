@@ -13,7 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.distinct.kitchenmanager.R;
-import com.distinct.kitchenmanager.element_behaviour.FullAmountFormatter;
+import com.distinct.kitchenmanager.element_behaviour.IngredientAmountFormatter;
 
 public class ConsumeIngredientDialogFragment extends DialogFragment {
 
@@ -25,6 +25,7 @@ public class ConsumeIngredientDialogFragment extends DialogFragment {
     private TextView ingredientNameTextView;
     private TextView amountToConsumeTextView;
     private SeekBar amountToConsumeSeekBar;
+
 
     public static ConsumeIngredientDialogFragment newInstance(String ingredientId) {
 
@@ -89,6 +90,14 @@ public class ConsumeIngredientDialogFragment extends DialogFragment {
             consumeIngredientViewModel.consumeIngredient(getContext());
             dismiss();
         });
+
+        root.findViewById(R.id.add_to_consume_weight_button).setOnClickListener(view -> {
+            consumeIngredientViewModel.incrementConsumedWeight();
+        });
+
+        root.findViewById(R.id.subtract_from_consume_weight_button).setOnClickListener(view -> {
+            consumeIngredientViewModel.decrementConsumedWeight();
+        });
     }
 
     private void setOnProgressChanged() {
@@ -121,7 +130,7 @@ public class ConsumeIngredientDialogFragment extends DialogFragment {
     }
 
     private String amountWithWeightType(float amount) {
-        return FullAmountFormatter.geFormattedString(amount) + " " + consumeIngredientViewModel.weightType;
+        return IngredientAmountFormatter.geFormattedString(amount) + " " + consumeIngredientViewModel.weightType;
     }
 
 }

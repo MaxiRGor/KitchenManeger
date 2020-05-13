@@ -11,9 +11,10 @@ public class Consumed {
     }
 
     @Ignore
-    public Consumed(String name, int calories, long timeOfConsumption) {
+    public Consumed(String name, int calories, String weight, long timeOfConsumption) {
         this.name = name;
         this.calories = calories;
+        this.weight = weight;
         this.timeOfConsumption = timeOfConsumption;
     }
 
@@ -25,6 +26,9 @@ public class Consumed {
 
     @ColumnInfo(name = "calories")
     public int calories;
+
+    @ColumnInfo(name = "weight")
+    public String weight;
 
     @ColumnInfo(name = "time_of_consumption")
     public long timeOfConsumption;

@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.distinct.kitchenmanager.R;
-import com.distinct.kitchenmanager.element_behaviour.FullAmountFormatter;
+import com.distinct.kitchenmanager.element_behaviour.IngredientAmountFormatter;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
 import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.ui.dialogs.change_ingridient.ChangeIngredientDialogFragment;
@@ -22,7 +22,6 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
 
     FragmentManager fragmentManager;
     ShoppingListViewModel shoppingListViewModel;
- //   private LinearLayout linearLayout;
     private Ingredient ingredient;
     private CheckBox isInBasketCheckbox;
     private LinearLayout amountOfIngredientsLinearLayout;
@@ -36,7 +35,6 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
 
     ShoppingListViewHolder(@NonNull View itemView) {
         super(itemView);
-    //    linearLayout = itemView.findViewById(R.id.item_shopping_list_linear_layout);
         isInBasketCheckbox = itemView.findViewById(R.id.is_in_basket_checkbox);
         amountOfIngredientsLinearLayout = itemView.findViewById(R.id.amount_of_ingredients_linear_layout);
         amountOfIngredientsTextView = itemView.findViewById(R.id.amount_of_ingredients_text_view);
@@ -110,7 +108,7 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder implements V
     private void setAmount(Ingredient ingredient, String weightTypeString) {
         if (ingredient.amountOfDistinct != 0) {
             ingredientAmountLinearLayout.setVisibility(View.VISIBLE);
-            ingredientAmountTextView.setText(FullAmountFormatter.geFormattedString(ingredient.fullAmount));
+            ingredientAmountTextView.setText(IngredientAmountFormatter.geFormattedString(ingredient.fullAmount));
             ingredientWeightTypeTextView.setText(weightTypeString);
 
         } else ingredientAmountLinearLayout.setVisibility(View.GONE);

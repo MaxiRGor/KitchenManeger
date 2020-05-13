@@ -14,15 +14,18 @@ public class FoodDairyViewHolder extends RecyclerView.ViewHolder {
 
     private TextView consumedNameTextView;
     private TextView consumedCaloriesTextView;
+    private TextView consumedWeightTextView;
 
     public FoodDairyViewHolder(@NonNull View itemView) {
         super(itemView);
         consumedNameTextView = itemView.findViewById(R.id.consumed_name_text_view);
         consumedCaloriesTextView = itemView.findViewById(R.id.consumed_calories_text_view);
+        consumedWeightTextView = itemView.findViewById(R.id.consumed_weight_text_view);
     }
 
     void bind(Consumed consumed) {
         consumedNameTextView.setText(consumed.name);
         consumedCaloriesTextView.setText(String.format(ApplicationContextSingleton.getInstance().getApplicationContext().getString(R.string.calories), consumed.calories));
+        consumedWeightTextView.setText(consumed.weight);
     }
 }

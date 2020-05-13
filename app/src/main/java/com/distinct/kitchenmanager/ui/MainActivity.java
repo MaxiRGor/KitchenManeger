@@ -1,4 +1,4 @@
-package com.distinct.kitchenmanager;
+package com.distinct.kitchenmanager.ui;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.distinct.kitchenmanager.ApplicationContextSingleton;
+import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.ui.dialogs.change_ingridient.ChangeIngredientDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

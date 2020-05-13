@@ -16,9 +16,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.distinct.kitchenmanager.MainActivity;
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.ui.FirebaseAuthActivity;
+import com.distinct.kitchenmanager.ui.MainActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -75,7 +75,7 @@ public class AccountFragment extends Fragment {
         FirebaseFirestore.getInstance().collection(getString(R.string.firestore_collection_fridges)).document(MainActivity.getFridgeId()).get().addOnSuccessListener(documentSnapshot -> {
             List<String> users;
             users = (List<String>) documentSnapshot.get(getString(R.string.firestore_field_array_fridge_members));
-            if (users != null) {
+            if (users != null && fridgeUsersTextView != null) {
                 String usersInOneString = users.toString();
                 usersInOneString = usersInOneString.substring(1, usersInOneString.length() - 1);   //to cut [ at the beginning and ] at the end
                 fridgeUsersTextView.setText(String.format(getString(R.string.users_now), users.size(), usersInOneString));
@@ -127,8 +127,13 @@ public class AccountFragment extends Fragment {
     }
 
     private void deleteAccount() {
-        if (getContext() != null)
-            AuthUI.getInstance().delete(getContext()).addOnCompleteListener(task -> startAuthActivity());
+        if (getContext() != null) {
+            AuthUI.getInstance().delete(getContext()).addOnCompleteListener(task1 -> { startAuthActivity();
+               // AuthUI.getInstance().signOut(getContext()).addOnCompleteListener(task2 -> startAuthActivity());
+            });
+
+        }
+
     }
 
 }

@@ -7,7 +7,6 @@ import com.distinct.kitchenmanager.model.database.dao.IngredientDaoImpl;
 public class FirestoreDatabase {
 
     FirestoreDatabase() {
-        Log.d("aaaa", "created");
         this.ingredientDao = new IngredientDaoImpl();
     }
 

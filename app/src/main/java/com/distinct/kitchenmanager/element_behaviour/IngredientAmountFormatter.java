@@ -2,7 +2,7 @@ package com.distinct.kitchenmanager.element_behaviour;
 
 import java.text.DecimalFormat;
 
-public class FullAmountFormatter {
+public class IngredientAmountFormatter {
     public static String geFormattedString(float number) {
         if (number % (int) number == 0)
             return String.valueOf((int) number);

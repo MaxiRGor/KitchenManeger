@@ -93,7 +93,7 @@ public class FridgeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private void fullyConsumeIngredient(Ingredient ingredient) {
         int calories = (int) (ingredient.caloriesInDistinct * (ingredient.fullAmount / ingredient.amountOfDistinct));
-        Consumed consumed = new Consumed(ingredient.name, calories, new Date().getTime());
+        Consumed consumed = new Consumed(ingredient.name, calories, ingredient.fullAmount + " " + weightTypes[ingredient.weightType], new Date().getTime());
         ingredient.stageType = IngredientStageType.Consumed.ordinal();
 
         AsyncTask.execute(() -> {

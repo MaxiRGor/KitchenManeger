@@ -10,9 +10,6 @@
         android:id="@+id/date_text_view"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:gravity="center"
         android:text="@string/example_date"
         android:textAlignment="center"
@@ -23,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="56dp"
         android:id="@+id/food_dairy_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

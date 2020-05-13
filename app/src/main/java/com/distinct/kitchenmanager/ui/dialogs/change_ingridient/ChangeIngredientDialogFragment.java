@@ -3,6 +3,7 @@ package com.distinct.kitchenmanager.ui.dialogs.change_ingridient;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,7 +26,9 @@ import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.distinct.kitchenmanager.model.enums.IngredientStageType;
 import com.distinct.kitchenmanager.ui.dialogs.date_pick.DatePickerFragment;
 import com.distinct.kitchenmanager.ui.dialogs.date_pick.OnDatePickedListener;
+import com.google.android.material.chip.Chip;
 
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 public class ChangeIngredientDialogFragment extends DialogFragment implements OnDatePickedListener {
@@ -41,10 +45,13 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
     private TextView amountOfIngredientsTextView;
     private TextView actionsDestinationNameTextView;
     private TextView shelfLifeTextView;
-    private TextView caloriesEditText;
+    private EditText caloriesEditText;
     private RadioGroup stageTypeRadioGroup;
     private Button changeIngredientButton;
     private Spinner weightTypesSpinner;
+
+    private LinearLayout categoriesChipsLinearLayout;
+    private ArrayList<Chip> chips;
 
 
     public static ChangeIngredientDialogFragment newInstance(String ingredientId) {
@@ -81,6 +88,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
             checkIfIngredientExists();
             setOnClickListeners(root);
             setObservers();
+            addChips();
         });
     }
 
@@ -96,6 +104,7 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         stageTypeRadioGroup = root.findViewById(R.id.stage_type_radio_group);
         actionsDestinationNameTextView = root.findViewById(R.id.actions_destination_name_text_view);
         shelfLifeTextView = root.findViewById(R.id.shelf_life_text_view);
+        categoriesChipsLinearLayout = root.findViewById(R.id.categories_chips_linear_layout);
     }
 
     private void setAutoCompleteTextViews() {
@@ -145,7 +154,27 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
         }
 
         shelfLifeTextView.setOnClickListener(view -> showDatePickerDialog());
+    }
 
+    private void addChips() {
+        String[] categories = getResources().getStringArray(R.array.categories);
+        chips = new ArrayList<>();
+        for (String genre : categories) {
+            Chip chip = new Chip(getContext());
+            chip.setText(genre);
+            categoriesChipsLinearLayout.addView(chip);
+            chips.add(chip);
+            chip.setOnCheckedChangeListener((compoundButton, b) -> {
+                if (b) {
+                    for (Chip other : chips) {
+                        if (chip != other)
+                            other.setChecked(false);
+                    }
+                    changeIngredientViewModel.saveCategory(chip.getText().toString());
+                }
+
+            });
+        }
     }
 
     private void showDatePickerDialog() {
@@ -235,6 +264,11 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
     });
 
     private void performActionAfterChecks(Callable<Void> task) {
+
+        if (validateForm(ingredientNameEditText)) return;
+        if (validateForm(caloriesEditText)) return;
+        if (validateForm(ingredientAmountEditText)) return;
+
         String ingredientName = ingredientNameEditText.getText().toString();
         String manufacturerName = manufacturerEditText.getText().toString();
         String ingredientAmountString = ingredientAmountEditText.getText().toString();
@@ -273,5 +307,18 @@ public class ChangeIngredientDialogFragment extends DialogFragment implements On
             changeIngredientViewModel.setShelfLife(year, month, day);
             return null;
         });
+    }
+
+    private boolean validateForm(EditText editText) {
+        String text = editText.getText().toString();
+
+        boolean valid = true;
+        if (TextUtils.isEmpty(text)) {
+            editText.setError(getResources().getString(R.string.is_empty));
+            valid = false;
+        } else {
+            editText.setError(null);
+        }
+        return !valid;
     }
 }

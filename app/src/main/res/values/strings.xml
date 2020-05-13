@@ -89,6 +89,7 @@
     <string name="firestore_field_ingredient_comment">comment</string>
     <string name="firestore_field_ingredient_stage_type">stageType</string>
     <string name="firestore_field_ingredient_shelf_life_time">shelfLifeTime</string>
+    <string name="firestore_field_ingredient_category">category</string>
 
 
 </resources>

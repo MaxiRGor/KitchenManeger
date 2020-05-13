@@ -96,14 +96,26 @@
             android:layout_height="56dp"
             android:layout_marginHorizontal="8dp">
 
+            <Button
+                android:id="@+id/subtract_from_consume_weight_button"
+                style="@style/RoundButtonStyle"
+                android:text="-" />
+
             <SeekBar
                 android:id="@+id/to_consume_seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:progress="25"
                 android:progressTint="@color/colorPrimary"
                 android:thumbTint="@color/colorPrimaryDark" />
+
+            <Button
+                android:id="@+id/add_to_consume_weight_button"
+                style="@style/RoundButtonStyle"
+                android:text="+" />
+
         </LinearLayout>
 
         <LinearLayout

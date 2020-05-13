@@ -19,18 +19,14 @@ public class ShoppingListViewModel extends IngredientListViewModel {
 
     void changeIngredientState(String ingredientId, boolean isChecked) {
         if (items.getValue() != null) {
-            Ingredient ingredient = findUsingIterator(ingredientId, items.getValue());
+            Ingredient ingredient = findByIdUsingIterator(ingredientId, items.getValue());
             if (ingredient != null) {
                 if (isChecked && ingredient.stageType == IngredientStageType.ToBuy.ordinal()) {
                     ingredient.stageType = IngredientStageType.InBasket.ordinal();
-                    //AsyncTask.execute(() ->
                     firestoreDatabase.ingredientDao.update(ingredient);
-                    //);
                 } else if (!isChecked && ingredient.stageType == IngredientStageType.InBasket.ordinal()) {
                     ingredient.stageType = IngredientStageType.ToBuy.ordinal();
-                    // AsyncTask.execute(() ->
                     firestoreDatabase.ingredientDao.update(ingredient);
-                    //);
                 }
             }
         }

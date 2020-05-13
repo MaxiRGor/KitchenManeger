@@ -14,4 +14,8 @@ public class FridgeViewModel extends IngredientListViewModel {
         super(application);
         init(new int[]{IngredientStageType.InFridge.ordinal()});
     }
+
+    public void searchByCategory(String category) {
+        super.searchByCategory(category);
+    }
 }

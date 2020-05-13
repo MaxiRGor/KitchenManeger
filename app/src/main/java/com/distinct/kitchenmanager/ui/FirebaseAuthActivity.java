@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.distinct.kitchenmanager.MainActivity;
 import com.distinct.kitchenmanager.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -86,7 +86,7 @@ public class FirebaseAuthActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 continueRegistration();
             } else {
-                Toast.makeText(getApplicationContext(), R.string.oops_try_again, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), R.string.oops_try_again, Toast.LENGTH_LONG).show();
                 finish();
             }
         }

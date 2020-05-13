@@ -54,7 +54,6 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder,
                           @NonNull RecyclerView.ViewHolder target) {
-        //  mAdapter.onItemMoveVertically(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return false;
     }
 
@@ -62,10 +61,8 @@ public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         if (direction == ItemTouchHelper.START) {
             mAdapter.onItemMovedToLeft(viewHolder.getAdapterPosition());
-            Log.d("a", "moved left");
         } else if (direction == ItemTouchHelper.END) {
             mAdapter.onItemMovedToRight(viewHolder.getAdapterPosition());
-            Log.d("a", "moved to right");
         }
 
     }

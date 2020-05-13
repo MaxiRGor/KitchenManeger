@@ -1,7 +1,6 @@
 package com.distinct.kitchenmanager.ui.fragment_with_search_view;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class IngredientListViewModel extends AndroidViewModel {
 
-    public FirestoreDatabase firestoreDatabase;
+    protected FirestoreDatabase firestoreDatabase;
 
     protected MutableLiveData<List<Ingredient>> items;
     private MutableLiveData<List<Ingredient>> foundItems;
@@ -64,20 +63,18 @@ public class IngredientListViewModel extends AndroidViewModel {
     }
 
     public void searchByIngredientName(String ingredientName) {
-        //       AsyncTask.execute(() -> {
-
         foundItems.postValue(findByName(ingredientName));
-        //   });
+    }
 
+    public void searchByCategory(String category) {
+        foundItems.postValue(findByCategory(category));
     }
 
     public void deleteIngredient(String ingredientId) {
         if (items.getValue() != null) {
-            Ingredient ingredient = findUsingIterator(ingredientId, items.getValue());
+            Ingredient ingredient = findByIdUsingIterator(ingredientId, items.getValue());
             if (ingredient != null) {
-                //   AsyncTask.execute(() -> {
                 firestoreDatabase.ingredientDao.delete(ingredient);
-                //     });
             }
         }
     }
@@ -86,16 +83,26 @@ public class IngredientListViewModel extends AndroidViewModel {
         List<Ingredient> ingredients = new ArrayList<>();
         if (items.getValue() != null)
             for (Ingredient ingredient : items.getValue()) {
-                Log.d("aaa", "name = " + ingredient.name );
                 if (ingredient.name.toLowerCase().contains(search.toLowerCase())) {
-                    Log.d("aaa", "adding");
                     ingredients.add(ingredient);
                 }
             }
         return ingredients;
     }
 
-    protected Ingredient findUsingIterator(String id, List<Ingredient> ingredients) {
+    private List<Ingredient> findByCategory(String category) {
+        List<Ingredient> ingredients = new ArrayList<>();
+        if (items.getValue() != null)
+            for (Ingredient ingredient : items.getValue()) {
+                if (ingredient.category != null && ingredient.category.equals(category)) {
+                    ingredients.add(ingredient);
+                }
+            }
+        return ingredients;
+    }
+
+
+    protected Ingredient findByIdUsingIterator(String id, List<Ingredient> ingredients) {
         for (Ingredient ingredient : ingredients) {
             if (ingredient.id.equals(id)) {
                 return ingredient;

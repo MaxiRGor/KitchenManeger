@@ -50,7 +50,6 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Log.d("asad", "ingredients.size() = " + this.ingredients.size());
         Ingredient ingredient = ingredients.get(position);
         ShoppingListViewHolder viewHolder = (ShoppingListViewHolder) holder;
         viewHolder.fragmentManager = fragmentManager;
@@ -80,7 +79,6 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onItemMovedToLeft(int position) {
-        Log.d("aaa", "pos = " + position);
         //move to fridge
         if (arrayListNotContainsPosition(position)) {
             showSnackbar(activity.getResources().getString(R.string.oops_try_again));
@@ -101,8 +99,6 @@ public class ShoppingListRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     private boolean arrayListNotContainsPosition(int position) {
-        Log.d("aaa", "ingredients.size() = " + this.ingredients.size());
-       // Log.d("aaa", "ingredients.size() = " + ingredients.size());
         return this.ingredients.size() <= position || this.ingredients.get(position) == null;
     }
 }

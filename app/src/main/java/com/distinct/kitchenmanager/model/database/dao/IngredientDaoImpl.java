@@ -1,7 +1,7 @@
 package com.distinct.kitchenmanager.model.database.dao;
 
 import com.distinct.kitchenmanager.ApplicationContextSingleton;
-import com.distinct.kitchenmanager.MainActivity;
+import com.distinct.kitchenmanager.ui.MainActivity;
 import com.distinct.kitchenmanager.R;
 import com.distinct.kitchenmanager.model.database.entity.Ingredient;
 import com.google.firebase.firestore.CollectionReference;
@@ -23,14 +23,6 @@ public class IngredientDaoImpl implements IngredientDao {
                 .whereIn(getString(R.string.firestore_field_ingredient_stage_type), getListFromArray(stageTypes));
     }
 
-/*    @Override
-    public Query getIngredientsByStageTypesAndName(int[] stageTypes, String search) {
-        return collectionReference()
-                .whereIn(getString(R.string.firestore_field_ingredient_stage_type), getListFromArray(stageTypes))
-                .orderBy(getString(R.string.firestore_field_ingredient_name)).
-                        startAt(search).endAt(search + '\uf8ff');
-    }*/
-
     @Override
     public CollectionReference getAll() {
         return collectionReference();
@@ -45,17 +37,17 @@ public class IngredientDaoImpl implements IngredientDao {
     public void insert(Ingredient ingredient) {
         DocumentReference documentReference = collectionReference().document();
         ingredient.id = documentReference.getId();
-        documentReference.set(getIngredientHashMap(ingredient));//.getResult();
+        documentReference.set(getIngredientHashMap(ingredient));
     }
 
     @Override
     public void update(Ingredient ingredient) {
-        collectionReference().document(ingredient.id).update(getIngredientHashMap(ingredient));//.getResult();
+        collectionReference().document(ingredient.id).update(getIngredientHashMap(ingredient));
     }
 
     @Override
     public void delete(Ingredient ingredient) {
-        collectionReference().document(ingredient.id).delete();//.getResult();
+        collectionReference().document(ingredient.id).delete();
     }
 
     private String getString(int resId) {
@@ -82,6 +74,7 @@ public class IngredientDaoImpl implements IngredientDao {
         hashMap.put(getString(R.string.firestore_field_ingredient_name), ingredient.name);
         hashMap.put(getString(R.string.firestore_field_ingredient_manufacturer), ingredient.manufacturer);
         hashMap.put(getString(R.string.firestore_field_ingredient_weight_type), ingredient.weightType);
+        hashMap.put(getString(R.string.firestore_field_ingredient_category), ingredient.category);
         hashMap.put(getString(R.string.firestore_field_ingredient_amount_of_distinct), ingredient.amountOfDistinct);
         hashMap.put(getString(R.string.firestore_field_ingredient_amount_df_ingredients), ingredient.amountOfIngredients);
         hashMap.put(getString(R.string.firestore_field_ingredient_full_amount), ingredient.fullAmount);

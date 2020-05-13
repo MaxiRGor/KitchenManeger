@@ -22,6 +22,8 @@ public class ChangeIngredientViewModel extends ViewModel {
     private MutableLiveData<Ingredient> ingredientLiveData;
     private MutableLiveData<String[]> ingredientNamesLiveData;
 
+    private String category = "";
+
     public ChangeIngredientViewModel() {
         firestoreDatabase = FirestoreSource.getInstance();
         ingredientLiveData = new MutableLiveData<>();
@@ -40,7 +42,6 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
     private void getIngredientNamesFromDatabase() {
-        //  AsyncTask.execute(() -> {
         firestoreDatabase.ingredientDao.getAll().addSnapshotListener((queryDocumentSnapshots, e) -> {
             if (queryDocumentSnapshots != null) {
 
@@ -60,10 +61,6 @@ public class ChangeIngredientViewModel extends ViewModel {
                 ingredientNamesLiveData.postValue(namesArray);
             }
         });
-
-
-        //    });
-
     }
 
 
@@ -97,25 +94,21 @@ public class ChangeIngredientViewModel extends ViewModel {
             ingredient.comment = comment;
             ingredient.stageType = stageTypeOrdinal;
             ingredient.caloriesInDistinct = calories;
+            ingredient.category = category;
             ingredientLiveData.setValue(ingredient);
         }
     }
 
     void addIngredientToDatabase() {
-        // AsyncTask.execute(() ->
         firestoreDatabase.ingredientDao.insert(ingredientLiveData.getValue());
-        //);
     }
 
     void loadIngredientFromDatabase() {
-        // AsyncTask.execute(() -> {
         firestoreDatabase.ingredientDao.getById(idOfIngredientToChange).addSnapshotListener((documentSnapshot, e) -> {
             if (documentSnapshot != null) {
                 ingredientLiveData.postValue(documentSnapshot.toObject(Ingredient.class));
             }
         });
-
-        //    });
     }
 
     void setIngredientId() {
@@ -127,10 +120,8 @@ public class ChangeIngredientViewModel extends ViewModel {
     }
 
     void updateIngredientInDatabase() {
-        //  AsyncTask.execute(() -> {
         if (ingredientLiveData.getValue() != null)
             firestoreDatabase.ingredientDao.update(ingredientLiveData.getValue());
-        //  });
     }
 
     void setShelfLife(int year, int month, int day) {
@@ -153,5 +144,9 @@ public class ChangeIngredientViewModel extends ViewModel {
             return calendar;
         }
         return null;
+    }
+
+    void saveCategory(String category) {
+        this.category = category;
     }
 }
